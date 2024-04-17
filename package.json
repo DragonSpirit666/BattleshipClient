@@ -4,9 +4,11 @@
   "description": "BattleShip ahah",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Zachary Deschênes-Tremlbay, Justin Morand",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+    },
+  "author": "Zachary Deschênes-Tremblay, Justin Morand",
   "license": "ISC",
   "devDependencies": {
     "axios": "^1.6.8",

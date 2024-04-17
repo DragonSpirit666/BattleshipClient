@@ -1,5 +1,49 @@
 import './styles.css';
+import historique from './components/historique.js';
+import grille from './components/grille.js';
+/*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
+pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
+étapes d’installation ou d’exécution de votre projet dans un README.*/
+
+document.body.appendChild(document.createElement('h2'));
+
+document.body.appendChild(historique([
+  "Joueur 1 à tiré en A1",
+  "Joueur 2 à tiré en B2",
+  "Touché en B2!",
+  "Joueur 1 à tiré en A2",
+]));
+
+document.body.appendChild(grille());
+
+/**
+À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
+• Nom du joueur IA 1
+• URL de l’API du joueur IA 1
+• Jeton du joueur IA 1
+• Nom du joueur IA 2
+• URL de l’API du joueur IA 2
+• Jeton du joueur IA 2
+ */
+// On devra ensuite peser sur un bouton pour démarrer la simulation. 
+// Le jeu doit s’effectuer à une vitesse raisonnable afin de pouvoir voir chaque coup.
+// Vous devez faire afficher l’historique des coups joués dans une section prévue à cet effet.
+
+
 /*
+À côté de vos grilles, vous devez présenter les bateaux de chaque joueur ainsi que leur état.
+La simulation s’arrête dès qu’un joueur gagne 2 parties. Le jeu doit tomber en pause entre chaque 
+partie.
+Lorsque la partie est terminée, indiquez clairement le nom du gagnant et le nombre de victoires pour 
+chaque joueur (victoires de cette simulation). Finalement, donnez la possibilité de retourner au 
+formulaire d’accueil. Les champs doivent être préremplis afin de pouvoir démarrer une nouvelle partie 
+rapidement.
+Vous devez également ajouter un bouton pour arrêter une simulation en cours et retourner au 
+formulaire d’accueil à tout moment.
+*/
+
+
+/*-------------------------/
 let xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
@@ -34,6 +78,7 @@ fetch("http://localhost/api/timeentries", requestOptions)
   .catch((error) => console.log("error", error));   */
 
 import axios from "axios";
+import Historique from './components/historique';
 /*
 axios
   .post("http://localhost/api/timeentries", {
