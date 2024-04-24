@@ -2,6 +2,7 @@ import './styles.css';
 import historique from './components/historique.js';
 import grille from './components/grille.js';
 import {colorHorizontalLine, placeX} from './components/grille.js';
+import formPage from './components/form.js'
 
 /*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
 pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
@@ -29,6 +30,8 @@ gridsContainer.appendChild(grid2);
 
 colorHorizontalLine(grid1, 1, 2, 5)
 placeX(grid1, 4, 4)
+
+document.body.appendChild(formPage());
 
 /**
 À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
