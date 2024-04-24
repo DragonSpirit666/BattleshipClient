@@ -1,6 +1,8 @@
 import './styles.css';
 import historique from './components/historique.js';
 import grille from './components/grille.js';
+import {colorHorizontalLine, placeX} from './components/grille.js';
+
 /*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
 pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
 étapes d’installation ou d’exécution de votre projet dans un README.*/
@@ -14,7 +16,19 @@ document.body.appendChild(historique([
   "Joueur 1 à tiré en A2",
 ]));
 
-document.body.appendChild(grille());
+const gridsContainer = document.createElement('div');
+gridsContainer.className = "d-flex flex-row justify-content-around flex-wrap"
+
+document.body.appendChild(gridsContainer);
+
+const grid1 = grille();
+const grid2 = grille();
+
+gridsContainer.appendChild(grid1);
+gridsContainer.appendChild(grid2);
+
+colorHorizontalLine(grid1, 1, 2, 5)
+placeX(grid1, 4, 4)
 
 /**
 À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
