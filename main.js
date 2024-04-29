@@ -1,12 +1,26 @@
 import './styles.css';
 import historique from './components/historique.js';
 import grille from './components/grille.js';
-import {colorHorizontalLine, placeX} from './components/grille.js';
+import {colorHorizontalLine, colorVerticalLine, placeX} from './components/grille.js';
 import formPage from './components/form.js'
 
 /*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
 pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
 étapes d’installation ou d’exécution de votre projet dans un README.*/
+
+import axios from "axios";
+const authToken = "1|fgeNtCkS9brHnZ3qmZdmSGThgH6uxZhEoNkKvpiq25bf2f03"; 
+axios.post("http://localhost/api/battleship-ai/parties", {
+  adversaire: "IA",
+}, {
+  headers: {
+    Authorization: `Bearer ${authToken}`
+  }
+})
+.then((response) => console.log(response.data.data))
+.catch((error) => console.error(error));
+
+ // --
 
 document.body.appendChild(document.createElement('h2'));
 
@@ -29,7 +43,9 @@ gridsContainer.appendChild(grid1);
 gridsContainer.appendChild(grid2);
 
 colorHorizontalLine(grid1, 1, 2, 5)
-placeX(grid1, 4, 4)
+colorVerticalLine(grid1, 1, 2, 5)
+placeX(grid1, 2, 2)
+placeX(grid1, 1, 4)
 
 document.body.appendChild(formPage());
 
@@ -93,9 +109,6 @@ fetch("http://localhost/api/timeentries", requestOptions)
     });
   })
   .catch((error) => console.log("error", error));   */
-
-import axios from "axios";
-import Historique from './components/historique';
 /*
 axios
   .post("http://localhost/api/timeentries", {
@@ -110,7 +123,7 @@ axios
   .then((response) => console.log(response))
   .catch((error) => console.error(error));
 */
-
+/*
 const form = document.getElementById("search");
 const formFields = document.getElementById("search_fields");
 const result = document.getElementById("result");
@@ -136,4 +149,4 @@ axios
   .then(() => {
     formFields.disabled = false;
   });
-});
+});*/
