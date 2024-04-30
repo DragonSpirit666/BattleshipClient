@@ -9,7 +9,7 @@ pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vo
 étapes d’installation ou d’exécution de votre projet dans un README.*/
 
 import axios from "axios";
-const authToken = "1|fgeNtCkS9brHnZ3qmZdmSGThgH6uxZhEoNkKvpiq25bf2f03"; 
+const authToken = "1|nT3XkTFL7ZK5obpGwHZBASraDzIwRxJ2P3x7Ys1I5238d9ef"; 
 axios.post("http://localhost/api/battleship-ai/parties", {
   adversaire: "IA",
 }, {
@@ -17,12 +17,22 @@ axios.post("http://localhost/api/battleship-ai/parties", {
     Authorization: `Bearer ${authToken}`
   }
 })
-.then((response) => console.log(response.data.data))
+.then((response) => console.log(response.data.data.bateaux))
 .catch((error) => console.error(error));
 
  // --
 
-document.body.appendChild(document.createElement('h2'));
+function placeBateaux(grid, bateaux) {
+  bateaux.forEach(bateau => {
+    bateau.positions.forEach(position => {
+      placeX(grid, position.row, position.col)
+    })
+  })
+}
+
+ // --
+
+document.body.appendChild(formPage());
 
 document.body.appendChild(historique([
   "Joueur 1 à tiré en A1",
@@ -46,8 +56,6 @@ colorHorizontalLine(grid1, 1, 2, 5)
 colorVerticalLine(grid1, 1, 2, 5)
 placeX(grid1, 2, 2)
 placeX(grid1, 1, 4)
-
-document.body.appendChild(formPage());
 
 /**
 À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :

@@ -1,22 +1,33 @@
 export default function createForm() {
     const form = document.createElement('form');
+    
     const subForm1 = document.createElement('div');
-
     form.appendChild(subForm1);
-    subForm1.appendChild(createFormGroup());
+    subForm1.className = "card p-3 m-3";
+    subForm1.appendChild(createFormGroup("Nom du joueur IA 1", "nom1"));
+    subForm1.appendChild(createFormGroup("URL de l'API du joueur IA 1", "url1"));
+    subForm1.appendChild(createFormGroup("Jeton du joueur IA 1", "jeton1"));
+
+    const subForm2 = document.createElement('div');
+    form.appendChild(subForm2);
+    subForm2.className = "card p-3 m-3";
+    subForm2.appendChild(createFormGroup("Nom du joueur IA 2", "nom2"));
+    subForm2.appendChild(createFormGroup("URL de l'API du joueur IA 2", "url2"));
+    subForm2.appendChild(createFormGroup("Jeton du joueur IA 2", "jeton2"));
 
     return form;
 }
 
-function createFormGroup() {
+function createFormGroup(nom, pour) {
     const formGroup = document.createElement('div');
     formGroup.className = "form-group";
 
     const label = document.createElement('label');
-    label.innerText = "Nom du joueur";
-    label.for = "nom1";
+    label.innerText = nom;
+    label.for = pour;
 
     const input = document.createElement('input');
+    input.className = "form-control mb-2";
     input.type = "text";
 
     formGroup.appendChild(label);
