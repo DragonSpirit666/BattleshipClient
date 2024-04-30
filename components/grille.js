@@ -1,6 +1,11 @@
-export default function createGrid() {
+export default function createGrid(titre) {
     const gridContainer = document.createElement('div');
     // gridContainer.className = 'row';
+
+    const title = document.createElement('h2');
+    title.className = 'text-center';
+    title.textContent = titre;
+    gridContainer.appendChild(title);
 
     // Top row
     const trow = document.createElement('div');

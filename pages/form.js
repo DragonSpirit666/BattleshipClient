@@ -26,7 +26,18 @@ export default function createForm() {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         document.body.innerHTML = "";
-        document.body.appendChild(createApercu());
+        const formData = new FormData(form);
+        const player1 = {
+            nom: formData.get("nom1"),
+            url: formData.get("url1"),
+            jeton: formData.get("jeton1")
+        };
+        const player2 = {
+            nom: formData.get("nom2"),
+            url: formData.get("url2"),
+            jeton: formData.get("jeton2")
+        };
+        document.body.appendChild(createApercu(player1, player2));
     });
 
     return form;
@@ -43,6 +54,8 @@ function createFormGroup(nom, pour) {
     const input = document.createElement('input');
     input.className = "form-control mb-2";
     input.type = "text";
+    input.id = pour;
+    input.name = pour;
     input.required = true;
 
     formGroup.appendChild(label);
