@@ -1,6 +1,7 @@
 import historique from '../components/historique.js';
 import grille from '../components/grille.js';
 import { placeTile, envoieMissile } from '../components/grille.js';
+import createFooter from '../components/footer.js';
 import axios from "axios";
 
 export default function createApercu(player1, player2) {
@@ -49,9 +50,8 @@ export default function createApercu(player1, player2) {
     .catch((error) => console.error(error));
     // --
     
-    envoieMissile(grid2, 'B', 2)
-    envoieMissile(grid2, 'A', 4)
-
+    page.appendChild(createFooter());
+    
     return page;
 }
 
@@ -68,4 +68,9 @@ function placeBateaux(grid, bateaux) {
             placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up")
         })
     })
+
+    envoieMissile(grid, 'B', 2)
+    envoieMissile(grid, 'A', 4)
+    envoieMissile(grid, 'E', 5)
+
 }

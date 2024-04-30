@@ -11,6 +11,9 @@ document.body.appendChild(formPage());
 // Le jeu doit s’effectuer à une vitesse raisonnable afin de pouvoir voir chaque coup.
 // Vous devez faire afficher l’historique des coups joués dans une section prévue à cet effet.
 
+Lorsqu'un bateau a été touché sur toutes ses cases, on annonce qu'il est coulé.
+Le premier joueur qui coule les cinq bateaux de son adversaire gagne
+
 /*
 À côté de vos grilles, vous devez présenter les bateaux de chaque joueur ainsi que leur état.
 La simulation s’arrête dès qu’un joueur gagne 2 parties. Le jeu doit tomber en pause entre chaque 
