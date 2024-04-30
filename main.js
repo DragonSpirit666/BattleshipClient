@@ -8,18 +8,8 @@ pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vo
 document.body.appendChild(formPage());
 
 /**
-À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
-• Nom du joueur IA 1
-• URL de l’API du joueur IA 1
-• Jeton du joueur IA 1
-• Nom du joueur IA 2
-• URL de l’API du joueur IA 2
-• Jeton du joueur IA 2
- */
-// On devra ensuite peser sur un bouton pour démarrer la simulation. 
 // Le jeu doit s’effectuer à une vitesse raisonnable afin de pouvoir voir chaque coup.
 // Vous devez faire afficher l’historique des coups joués dans une section prévue à cet effet.
-
 
 /*
 À côté de vos grilles, vous devez présenter les bateaux de chaque joueur ainsi que leur état.
@@ -32,7 +22,6 @@ rapidement.
 Vous devez également ajouter un bouton pour arrêter une simulation en cours et retourner au 
 formulaire d’accueil à tout moment.
 */
-
 
 /*-------------------------/
 let xhr = new XMLHttpRequest();
