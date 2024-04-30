@@ -24,7 +24,7 @@ export default function createGrid() {
       const firstcell = document.createElement('div');
       firstcell.className = 'm-1 square bg-light text-center';
       firstcell.textContent = String.fromCharCode(64 + i);
-      row.dataset.id = i;
+      row.dataset.id = String.fromCharCode(64 + i);
       row.appendChild(firstcell);
       for (let j = 1; j < 11; j++) {
         const cell = document.createElement('div');

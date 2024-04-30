@@ -8,30 +8,6 @@ import formPage from './components/form.js'
 pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
 étapes d’installation ou d’exécution de votre projet dans un README.*/
 
-import axios from "axios";
-const authToken = "1|nT3XkTFL7ZK5obpGwHZBASraDzIwRxJ2P3x7Ys1I5238d9ef"; 
-axios.post("http://localhost/api/battleship-ai/parties", {
-  adversaire: "IA",
-}, {
-  headers: {
-    Authorization: `Bearer ${authToken}`
-  }
-})
-.then((response) => console.log(response.data.data.bateaux))
-.catch((error) => console.error(error));
-
- // --
-
-function placeBateaux(grid, bateaux) {
-  bateaux.forEach(bateau => {
-    bateau.positions.forEach(position => {
-      placeX(grid, position.row, position.col)
-    })
-  })
-}
-
- // --
-
 document.body.appendChild(formPage());
 
 document.body.appendChild(historique([
@@ -52,10 +28,40 @@ const grid2 = grille();
 gridsContainer.appendChild(grid1);
 gridsContainer.appendChild(grid2);
 
+// --
+import axios from "axios";
+const authToken = "1|MuZU9587Z5uKFKCkdarJDnCVikQxm96CtB24GD9S331ad289"; 
+axios.post("http://localhost/api/battleship-ai/parties", {
+  adversaire: "IA",
+}, {
+  headers: {
+    Authorization: `Bearer ${authToken}`
+  }
+})
+.then((response) => {
+  console.log(response.data.data.bateaux)
+  placeBateaux(grid2, response.data.data.bateaux)
+})
+.catch((error) => console.error(error));
+
+ // --
+
+ function placeBateaux(grid, bateaux) {
+  Object.values(bateaux).forEach(bateau => {
+    Object.values(bateau).forEach(position => {
+      console.log(position[0])
+      console.log(position.substring(2))
+      placeX(grid, position[0], position.substring(2))
+    })
+  })
+}
+
+ // --
+
 colorHorizontalLine(grid1, 1, 2, 5)
 colorVerticalLine(grid1, 1, 2, 5)
-placeX(grid1, 2, 2)
-placeX(grid1, 1, 4)
+placeX(grid1, 'B', 2)
+placeX(grid1, 'A', 4)
 
 /**
 À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
