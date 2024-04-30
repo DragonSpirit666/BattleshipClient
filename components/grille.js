@@ -7,11 +7,11 @@ export default function createGrid() {
     trow.className = 'row';
 
     const firstcell = document.createElement('div');
-    firstcell.className = 'm-1 square';
+    firstcell.className = 'square';
     trow.appendChild(firstcell);
     for (let j = 1; j < 11; j++) {
       const cell = document.createElement('div');
-      cell.className = 'm-1 square bg-light text-center';
+      cell.className = 'square bg-light text-center';
       cell.textContent = j;
       trow.appendChild(cell);
     }
@@ -22,13 +22,13 @@ export default function createGrid() {
       const row = document.createElement('div');
       row.className = 'row';
       const firstcell = document.createElement('div');
-      firstcell.className = 'm-1 square bg-light text-center';
+      firstcell.className = 'square bg-light text-center';
       firstcell.textContent = String.fromCharCode(64 + i);
       row.dataset.id = String.fromCharCode(64 + i);
       row.appendChild(firstcell);
       for (let j = 1; j < 11; j++) {
         const cell = document.createElement('div');
-        cell.className = 'm-1 border square text-center';
+        cell.className = 'border square text-center';
         cell.dataset.col = j;
         row.appendChild(cell);
       }
@@ -94,7 +94,7 @@ export function envoieMissile(grid, row, col) {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => { 
           if (cell.dataset.col == col) {
-            cell.className = "m-1 square bg-danger"
+            cell.className = "square bg-danger"
           }
         })
       }

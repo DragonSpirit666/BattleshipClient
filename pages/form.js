@@ -1,3 +1,5 @@
+import createApercu from './apercu.js';
+
 export default function createForm() {
     const form = document.createElement('form');
     
@@ -15,6 +17,18 @@ export default function createForm() {
     subForm2.appendChild(createFormGroup("URL de l'API du joueur IA 2", "url2"));
     subForm2.appendChild(createFormGroup("Jeton du joueur IA 2", "jeton2"));
 
+    const button = document.createElement('button');
+    button.className = "btn btn-primary m-3";
+    button.innerText = "Valider";
+    button.type = "submit";
+    form.appendChild(button);
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        document.body.innerHTML = "";
+        document.body.appendChild(createApercu());
+    });
+
     return form;
 }
 
@@ -29,6 +43,7 @@ function createFormGroup(nom, pour) {
     const input = document.createElement('input');
     input.className = "form-control mb-2";
     input.type = "text";
+    input.required = true;
 
     formGroup.appendChild(label);
     formGroup.appendChild(input);
