@@ -64,7 +64,7 @@ export function placeTile(grid, row, col, facing, extremity = false) {
             else if (facing == "up")
               img.style.transform = "rotate(0deg)";
 
-            cell.appendChild(x);
+            cell.appendChild(img);
           }
         })
       }
@@ -76,7 +76,7 @@ export function envoieMissile(grid, row, col) {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => { 
           if (cell.dataset.col == col) {
-            cell.className = "square bg-danger"
+            cell.className = "square bg-danger border border-danger"
           }
         })
       }
