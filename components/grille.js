@@ -29,7 +29,6 @@ export default function createGrid() {
       for (let j = 1; j < 11; j++) {
         const cell = document.createElement('div');
         cell.className = 'm-1 border square text-center';
-        cell.dataset.row = i;
         cell.dataset.col = j;
         row.appendChild(cell);
       }
@@ -39,7 +38,7 @@ export default function createGrid() {
     return gridContainer;
   };
 
-export function colorHorizontalLine(grid, row, start, end) {
+/*export function colorHorizontalLine(grid, row, start, end) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => { 
@@ -59,17 +58,31 @@ export function colorVerticalLine(grid, col, start, end) {
         })
     }
   })
-}
+}*/
 
-export function placeX(grid, row, col) {
+export function placeTile(grid, row, col, facing, extremity = false) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => { 
           if (cell.dataset.col == col) {
-            if (cell.className.includes('bg-dark'))
-              cell.className = "m-1 square bg-danger"
+            const x = document.createElement("img");
+            x.className = "w-100 h-100";
+            console.log(x, cell);
+            if (extremity)
+              x.src = "../../images/BoatTileExtremity.png";
             else
-              cell.textContent = 'X'
+              x.src = "../../images/BoatTile.png";
+
+            if (facing == "right")
+              x.style.transform = "rotate(270deg)";
+            else if (facing == "left")
+              x.style.transform = "rotate(90deg)";
+            else if (facing == "down")
+              x.style.transform = "rotate(180deg)";
+            else if (facing == "up")
+              x.style.transform = "rotate(0deg)";
+
+            cell.appendChild(x);
           }
         })
       }

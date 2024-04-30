@@ -1,8 +1,13 @@
 import './styles.css';
 import historique from './components/historique.js';
 import grille from './components/grille.js';
-import {colorHorizontalLine, colorVerticalLine, placeX} from './components/grille.js';
+import { placeTile } from './components/grille.js';
 import formPage from './components/form.js'
+
+var x = document.createElement("img"); // new Image(); 
+// x.setAttribute("src", "../images/BoatTile.png");
+x.src = "../images/BoatTile.png";
+document.body.appendChild(x);
 
 /*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
 pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
@@ -48,20 +53,21 @@ axios.post("http://localhost/api/battleship-ai/parties", {
 
  function placeBateaux(grid, bateaux) {
   Object.values(bateaux).forEach(bateau => {
+    const axeHorizontal = bateau[0][0] == bateau[1][0];
     Object.values(bateau).forEach(position => {
-      console.log(position[0])
-      console.log(position.substring(2))
-      placeX(grid, position[0], position.substring(2))
+
+      if (bateau[0] == position)
+        placeTile(grid, position[0], position.substring(2), "up", true) 
+      else
+        placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up")
     })
   })
 }
 
  // --
 
-colorHorizontalLine(grid1, 1, 2, 5)
-colorVerticalLine(grid1, 1, 2, 5)
-placeX(grid1, 'B', 2)
-placeX(grid1, 'A', 4)
+ placeTile(grid1, 'B', 2)
+ placeTile(grid1, 'A', 4)
 
 /**
 À l’arrivée sur la page, on devra pouvoir saisir les informations suivantes :
