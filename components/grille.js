@@ -45,7 +45,7 @@ export default function createGrid(titre) {
 export function placeTile(grid, row, col, facing, extremity = false) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
-        actualRow.querySelectorAll('*').forEach(cell => { 
+        actualRow.querySelectorAll('*').forEach(cell => {
           if (cell.dataset.col == col) {
             const img = document.createElement("img");
             img.className = "w-100 h-100";
@@ -74,7 +74,7 @@ export function placeTile(grid, row, col, facing, extremity = false) {
 export function envoieMissile(grid, row, col) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
-        actualRow.querySelectorAll('*').forEach(cell => { 
+        actualRow.querySelectorAll('*').forEach(cell => {
           if (cell.dataset.col == col) {
             if (cell.querySelector('img'))
               cell.className = "square bg-danger border border-danger"

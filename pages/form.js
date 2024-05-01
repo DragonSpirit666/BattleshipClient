@@ -2,7 +2,7 @@ import createApercu from './apercu.js';
 
 export default function createForm() {
     const form = document.createElement('form');
-    
+
     const subForm1 = document.createElement('div');
     form.appendChild(subForm1);
     subForm1.className = "card p-3 m-3";
