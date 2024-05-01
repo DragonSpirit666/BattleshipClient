@@ -71,6 +71,8 @@ export function placeTile(grid, row, col, facing, extremity = false) {
   })
 }
 
+
+
 export function envoieMissile(grid, row, col) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {

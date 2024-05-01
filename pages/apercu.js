@@ -48,32 +48,17 @@ export default function createApercu(player1, player2) {
       .then((response) => {
         placeBateaux(grid2, response.data.data.bateaux)
       }).catch((error) => {
-        console.error(error)
+        console.error(error);
         const message = document.createElement('p');
         message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
       }).then(() => {
         console.log("boucle");
-        LancerMissile(Joueur1instanceAxios, 1)
-        .then((response) => {
-          console.log("loop " + response)
-          setTimeout(() => {
-            ResultatMissile(response, Joueur1instanceAxios, 1)
-          }, 2000)
-        })
-        .then((response) => {
-          console.log("loop2 " + response)
-          setTimeout(() => {
-            LancerMissile(Joueur2instanceAxios, 2)
-          }, 2000)
-        })
-        .then((response) => {
-          setTimeout(() => {
-            ResultatMissile(response, Joueur2instanceAxios, 2)
-          }, 2000)
-        })
-
       })
+
+
+    envoieMissile(2, 2, 2);
+    envoieMissile(1, 2, 2);
 
     gridsContainer.appendChild(grid1);
     gridsContainer.appendChild(grid2);
@@ -105,17 +90,17 @@ function loop(Joueur1instanceAxios, Joueur2instanceAxios) {
       console.log("loop " + response)
       setTimeout(() => {
         ResultatMissile(response, Joueur1instanceAxios, 1)
-      }, 2000)
-    })
-    .then((response) => {
-      console.log("loop2 " + response)
-      setTimeout(() => {
-        LancerMissile(Joueur2instanceAxios, 2)
-      }, 2000)
-    })
-    .then((response) => {
-      setTimeout(() => {
-        ResultatMissile(response, Joueur2instanceAxios, 2)
+        .then((response) => {
+          console.log("loop2 " + response)
+        setTimeout(() => {
+          LancerMissile(Joueur2instanceAxios, 2)
+          .then((response) => {
+          setTimeout(() => {
+            ResultatMissile(response, Joueur2instanceAxios, 2)
+          }, 2000)
+        })
+        }, 2000)
+      })
       }, 2000)
     })
   }
