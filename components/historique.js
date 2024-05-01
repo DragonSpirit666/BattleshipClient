@@ -22,3 +22,16 @@ export default function createHistorique(mouvements) {
 
     return historiqueDiv;
 }
+
+export function updateHistorique(historiqueDiv, update) {
+    const list = historiqueDiv.querySelector('ul');
+    list.innerHTML = '';
+
+    mouvements.forEach((mouvement, index) => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = mouvement;
+        listItem.setAttribute('key', index.toString());
+        list.appendChild(listItem);
+    });
+}
