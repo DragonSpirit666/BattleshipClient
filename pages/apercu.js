@@ -32,10 +32,16 @@ export default function createApercu(player1, player2) {
       headers: { Authorization: `Bearer ${player2.jeton}` }
     });
 
+    let partieId1 = -1;
+    let partieId2 = -1;
+
     Joueur1instanceAxios
       .post("", {adversaire: player1.nom})
       .then((response) => {
         placeBateaux(grid1, response.data.data.bateaux)
+        partieId1 = response.data.data.id;
+
+        if (partieId2 != -1) loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2);
       }).catch((error) => {
         console.error(error)
         const message = document.createElement('p');
@@ -47,24 +53,24 @@ export default function createApercu(player1, player2) {
       .post("", {adversaire: player2.nom})
       .then((response) => {
         placeBateaux(grid2, response.data.data.bateaux)
-      })
-      .then(() => {
+        partieId2 = response.data.data.id;
+
+        if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2);
         console.log("boucle");
-        LancerMissile(Joueur1instanceAxios, 1)
+        /*LancerMissile(Joueur1instanceAxios, partieId2)
         .then((response) => {
           console.log(response);
           console.log("fin");
         })
-        console.log("boucle fin");
-      })
-      /*.catch((error) => {
+        console.log("boucle fin");*/
+      }).catch((error) => {
         console.error(error);
         const message = document.createElement('p');
         message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
-      })*/
+      })
 
-    loop(Joueur1instanceAxios, Joueur2instanceAxios)
+    // loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2)
     envoieMissile(grid1, 'A', 2);
 
     gridsContainer.appendChild(grid1);
@@ -75,7 +81,7 @@ export default function createApercu(player1, player2) {
     return page;
 }
 
-export function placeBateaux(grid, bateaux) {
+export function placeBateaux(grid, bateaux) { // TODO why export?
   Object.values(bateaux).forEach(bateau => {
       const axeHorizontal = bateau[0][0] == bateau[1][0];
       Object.values(bateau).forEach(position => {
@@ -90,25 +96,23 @@ export function placeBateaux(grid, bateaux) {
   })
 }
 
-function loop(Joueur1instanceAxios, Joueur2instanceAxios) {
-  for(let i = 0; i == 10; i++) {
-    LancerMissile(Joueur1instanceAxios, 1)
+function loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2) {
+  console.log("START LOOP");
+  for(let i = 0; i < 10; i++) {
+    setTimeout(() => {
+    console.log("ITERATION");
+    LancerMissile(Joueur1instanceAxios, partieId1)
     .then((response) => {
       console.log("loop " + response)
-      setTimeout(() => {
-        ResultatMissile(response, Joueur1instanceAxios, 1)
+        ResultatMissile(response, Joueur1instanceAxios, partieId1)
         .then((response) => {
           console.log("loop2 " + response)
-        setTimeout(() => {
-          LancerMissile(Joueur2instanceAxios, 2)
+          LancerMissile(Joueur2instanceAxios, partieId2)
           .then((response) => {
-          setTimeout(() => {
-            ResultatMissile(response, Joueur2instanceAxios, 2)
-          }, 2000)
+            ResultatMissile(response, Joueur2instanceAxios, partieId2)
         })
-        }, 2000)
       })
-      }, 2000)
     })
+  }, i * 2000);
   }
 }
