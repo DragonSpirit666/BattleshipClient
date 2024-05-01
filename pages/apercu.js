@@ -47,18 +47,25 @@ export default function createApercu(player1, player2) {
       .post("", {adversaire: player2.nom})
       .then((response) => {
         placeBateaux(grid2, response.data.data.bateaux)
-      }).catch((error) => {
+      })
+      .then(() => {
+        console.log("boucle");
+        LancerMissile(Joueur1instanceAxios, 1)
+        .then((response) => {
+          console.log(response);
+          console.log("fin");
+        })
+        console.log("boucle fin");
+      })
+      /*.catch((error) => {
         console.error(error);
         const message = document.createElement('p');
         message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
-      }).then(() => {
-        console.log("boucle");
-      })
+      })*/
 
-
-    envoieMissile(2, 2, 2);
-    envoieMissile(1, 2, 2);
+    loop(Joueur1instanceAxios, Joueur2instanceAxios)
+    envoieMissile(grid1, 'A', 2);
 
     gridsContainer.appendChild(grid1);
     gridsContainer.appendChild(grid2);

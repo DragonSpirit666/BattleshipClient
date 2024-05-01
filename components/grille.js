@@ -54,7 +54,6 @@ export function placeTile(grid, row, col, facing, extremity = false) {
               img.src = "../../images/BoatTileExtremity.png";
             else
               img.src = "../../images/BoatTile.png";
-
             if (facing == "right")
               img.style.transform = "rotate(270deg)";
             else if (facing == "left")
@@ -70,8 +69,6 @@ export function placeTile(grid, row, col, facing, extremity = false) {
       }
   })
 }
-
-
 
 export function envoieMissile(grid, row, col) {
   grid.querySelectorAll('*').forEach(actualRow => {
