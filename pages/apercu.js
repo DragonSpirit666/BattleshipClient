@@ -38,7 +38,7 @@ export default function createApercu(player1, player2) {
     .catch((error) => {
         console.error(error)
         const message = document.createElement('p');
-        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player1.nom}`;
+        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player1.nom} : ${error}`;
         page.prepend(message);
     });
 
@@ -55,7 +55,7 @@ export default function createApercu(player1, player2) {
     .catch((error) => {
         console.error(error)
         const message = document.createElement('p');
-        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom}`;
+        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
     });    // --
     
