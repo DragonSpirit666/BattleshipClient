@@ -35,7 +35,12 @@ export default function createApercu(player1, player2) {
     .then((response) => {
         placeBateaux(grid1, response.data.data.bateaux)
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+        console.error(error)
+        const message = document.createElement('p');
+        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player1.nom}`;
+        page.prepend(message);
+    });
 
     // Joueur 2
     axios.post(player2.url, { 
@@ -47,8 +52,12 @@ export default function createApercu(player1, player2) {
     .then((response) => {
         placeBateaux(grid2, response.data.data.bateaux)
     })
-    .catch((error) => console.error(error));
-    // --
+    .catch((error) => {
+        console.error(error)
+        const message = document.createElement('p');
+        message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom}`;
+        page.prepend(message);
+    });    // --
     
     page.appendChild(createFooter());
     
