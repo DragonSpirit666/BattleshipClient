@@ -21,19 +21,19 @@ export function loop(historique, Joueur1instanceAxios, partieId1, grid1, Joueur2
 
   for(let i = 0; i < 4000; i++) {
     setTimeout(() => {    // todo SATTAQUE SOI MEME??
-      LancerMissile(Joueur1instanceAxios, partieId1).then((coord) => {
-        let resultat = envoieMissile(grid1, coord[0],  coord.substring(2));
-        if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
+      LancerMissile(Joueur1instanceAxios, partieId2).then((coord) => {
+        let resultat = envoieMissile(grid2, coord[0],  coord.substring(2));
+        if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
         updateHistorique(historique, "Joueur 1", coord, resultat);
 
-        if (aPerdu(etatBateau1)) finirPartie(historique, "Joueur 1");
+        if (aPerdu(etatBateau2)) finirPartie(historique, "Joueur 1");
 
-        ResultatMissile(coord, Joueur1instanceAxios, partieId1, resultat)
+        ResultatMissile(coord, Joueur2instanceAxios, partieId1, resultat)
           .then(() => {
-            LancerMissile(Joueur2instanceAxios, partieId2).then((coord) => {
-              resultat = envoieMissile(grid2, coord[0],  coord.substring(2));
-              if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
-              ResultatMissile(coord, Joueur2instanceAxios, partieId2, resultat);
+            LancerMissile(Joueur2instanceAxios, partieId1).then((coord) => {
+              resultat = envoieMissile(grid1, coord[0],  coord.substring(2));
+              if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
+              ResultatMissile(coord, Joueur1instanceAxios, partieId1, resultat);
               updateHistorique(historique, "Joueur 2", coord, resultat);
 
               if (aPerdu(etatBateau2)) finirPartie(historique, "Joueur 2");
