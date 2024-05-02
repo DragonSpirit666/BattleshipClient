@@ -56,22 +56,12 @@ export default function createApercu(player1, player2) {
         partieId2 = response.data.data.id;
 
         if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
-        console.log("boucle");
-        /*LancerMissile(Joueur1instanceAxios, partieId2)
-        .then((response) => {
-          console.log(response);
-          console.log("fin");
-        })
-        console.log("boucle fin");*/
       }).catch((error) => {
         console.error(error);
         const message = document.createElement('p');
         message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
       })
-
-    // loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2)
-    envoieMissile(grid1, 'A', 2);
 
     gridsContainer.appendChild(grid1);
     gridsContainer.appendChild(grid2);
@@ -81,20 +71,20 @@ export default function createApercu(player1, player2) {
     return page;
 }
 
-export function placeBateaux(grid, bateaux) { // TODO why export?
+function placeBateaux(grid, bateaux) {
   Object.entries(bateaux).forEach(bateau => {
-      const axeHorizontal = bateau[1][0][0] == bateau[1][1][0];
-      const code = codeFromBateau(bateau[0]);
-      Object.values(bateau[1]).forEach(position => {
+    const code = codeFromBateau(bateau[0]);
+    const axeHorizontal = bateau[1][0][0] == bateau[1][1][0];
+    Object.values(bateau[1]).forEach(position => {
       const lettre = position[0];
       const chiffre = position.substring(2);
-      if (bateau[1][0] == position)
+      if (bateau[1][0] == position)                         // Place première extremité du bateau
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
-      else if (bateau[1][bateau[1].length - 1] == position)
+      else if (bateau[1][bateau[1].length - 1] == position) // Place extremité de fin du bateau
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
       else
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
-      })
+    })
   })
 }
 
@@ -104,7 +94,7 @@ function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, part
     setTimeout(() => {
     console.log("ITERATION");
 
-    LancerMissile(Joueur1instanceAxios, partieId1, grid1).then((coord) => {
+    LancerMissile(Joueur1instanceAxios, partieId1).then((coord) => {
       console.log(coord);
       console.log(envoieMissile(grid1, coord[0],  coord.substring(2)));
     })
@@ -114,7 +104,10 @@ function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, part
         ResultatMissile(response, Joueur1instanceAxios, partieId1)
         .then((response) => {
           console.log("loop2 " + response)
-          LancerMissile(Joueur2instanceAxios, partieId2)
+          LancerMissile(Joueur2instanceAxios, partieId2).then((coord) => {
+            console.log(coord);
+            console.log(envoieMissile(grid2, coord[0],  coord.substring(2)));
+          })
           .then((response) => {
             ResultatMissile(response, Joueur2instanceAxios, partieId2)
         })
