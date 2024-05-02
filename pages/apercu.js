@@ -32,16 +32,10 @@ export default function createApercu(player1, player2) {
       headers: { Authorization: `Bearer ${player2.jeton}` }
     });
 
-    let partieId1 = -1;
-    let partieId2 = -1;
-
     Joueur1instanceAxios
       .post("", {adversaire: player1.nom})
       .then((response) => {
         placeBateaux(grid1, response.data.data.bateaux)
-        partieId1 = response.data.data.id;
-
-        if (partieId2 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
       }).catch((error) => {
         console.error(error)
         const message = document.createElement('p');
@@ -53,15 +47,25 @@ export default function createApercu(player1, player2) {
       .post("", {adversaire: player2.nom})
       .then((response) => {
         placeBateaux(grid2, response.data.data.bateaux)
-        partieId2 = response.data.data.id;
-
-        if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
-      }).catch((error) => {
+      })
+      .then(() => {
+        console.log("boucle");
+        Joueur1instanceAxios.post(`${1}/missiles`)
+        .then((response) => {
+          console.log(response);
+          console.log("fin");
+        })
+        console.log("boucle fin");
+      })
+      /*.catch((error) => {
         console.error(error);
         const message = document.createElement('p');
         message.textContent = `Erreur lors de la récupération des données pour le joueur ${player2.nom} : ${error}`;
         page.prepend(message);
-      })
+      })*/
+
+    loop(Joueur1instanceAxios, Joueur2instanceAxios)
+    envoieMissile(grid1, 'A', 2);
 
     gridsContainer.appendChild(grid1);
     gridsContainer.appendChild(grid2);
@@ -71,19 +75,17 @@ export default function createApercu(player1, player2) {
     return page;
 }
 
-function placeBateaux(grid, bateaux) {
-  Object.entries(bateaux).forEach(bateau => {
-    const code = codeFromBateau(bateau[0]);
-    const axeHorizontal = bateau[1][0][0] == bateau[1][1][0];
-    Object.values(bateau[1]).forEach(position => {
-      const lettre = position[0];
-      const chiffre = position.substring(2);
-      if (bateau[1][0] == position)                         // Place première extremité du bateau
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
-      else if (bateau[1][bateau[1].length - 1] == position) // Place extremité de fin du bateau
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
+export function placeBateaux(grid, bateaux) {
+  Object.values(bateaux).forEach(bateau => {
+      const axeHorizontal = bateau[0][0] == bateau[1][0];
+      Object.values(bateau).forEach(position => {
+
+      if (bateau[0] == position)
+          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up", true)
+      else if (bateau[bateau.length - 1] == position)
+          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "left" : "down", true)
       else
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
-    })
+          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up")
+      })
   })
 }
