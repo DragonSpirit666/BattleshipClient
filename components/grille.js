@@ -64,7 +64,6 @@ export function placeTile(grid, row, col, code, facing, extremity = false) {
               img.style.transform = "rotate(0deg)";
 
             cell.dataset.code = code;
-            console.log(cell.dataset.code)
             cell.appendChild(img);
           }
         })
@@ -73,20 +72,25 @@ export function placeTile(grid, row, col, code, facing, extremity = false) {
 }
 
 export function envoieMissile(grid, row, col) {
+  let result = 0;
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => {
           if (cell.dataset.col == col) {
             if (cell.querySelector('img')) {
               cell.className = "square bg-danger border border-danger"
-              return cell.dataset.code;
+              console.log(cell.dataset.code)
+              result = cell.dataset.code;
+              return;
             }
             else {
               cell.className = "square bg-dark"
-              return 0;
+              return;
             }
           }
         })
       }
   })
+
+  return result;
 }

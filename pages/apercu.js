@@ -101,7 +101,7 @@ export function placeBateaux(grid, bateaux) { // TODO why export?
 
 function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2) {
   console.log("START LOOP");
-  for(let i = 0; i < 10; i++) {
+  for(let i = 0; i < 30; i++) {
     setTimeout(() => {
     console.log("ITERATION");
 
@@ -121,6 +121,6 @@ function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, part
         })
       })
     })
-  }, i * 2000);
+  }, i * 1200);
   }
 }
