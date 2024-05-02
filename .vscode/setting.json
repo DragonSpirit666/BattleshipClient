@@ -1,5 +1,5 @@
 {
 	"editor.codeActionOnSave":{
 		"source.fixAll.eslint": true
-	},
+	}
 }
