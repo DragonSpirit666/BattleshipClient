@@ -9,7 +9,7 @@ export function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxio
 
     LancerMissile(Joueur1instanceAxios, partieId1).then((coord) => {
       console.log(coord);
-      ResultatMissile(response, Joueur1instanceAxios, partieId1, envoieMissile(grid1, coord[0],  coord.substring(2)))
+      ResultatMissile(coord, Joueur1instanceAxios, partieId1, envoieMissile(grid1, coord[0],  coord.substring(2)))
         .then((response) => {
           console.log("loop2 " + response)
           LancerMissile(Joueur2instanceAxios, partieId2).then((coord) => {
