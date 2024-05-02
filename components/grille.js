@@ -50,7 +50,6 @@ export function placeTile(grid, row, col, code, facing, extremity = false) {
             const img = document.createElement("img");
             img.className = "w-100 h-100";
 
-            console.log(extremity, facing);
             if (extremity)
               img.src = "../../images/BoatTileExtremity.png";
             else

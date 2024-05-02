@@ -7,7 +7,7 @@ export async function LancerMissile(JoueurinstanceAxios, partie_id) {
 
 export async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_id) {
   const data = await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`)
-  console.log(data);
+  console.log("resultat : " + data.data.resultat);
   return data.data.data.coordonnee
 }
 
