@@ -26,7 +26,10 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
 
       updateHistorique(historique, nomJoueur1, coord, resultat);
 
-      if (aPerdu(etatBateau2)) finirPartie(historique, nomJoueur1);
+      if (aPerdu(etatBateau2)) {
+        finirPartie(historique, nomJoueur1);
+        return;
+      }
 
       ResultatMissile(coord, Joueur2instance, partieId1, resultat).then(() => {
           LancerMissile(Joueur2instance, partieId2).then((coord) => {
@@ -36,11 +39,14 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
 
             updateHistorique(historique, nomJoueur2, coord, resultat);
 
-            if (aPerdu(etatBateau2)) finirPartie(historique, nomJoueur2);
+            if (aPerdu(etatBateau1)) {
+              finirPartie(historique, nomJoueur2);
+              return;
+            }
 
             setTimeout(() => {
               gameLoop();
-            }, 1000);
+            }, 500);
           })
         })
     })
@@ -64,12 +70,10 @@ function finirPartie(historique, joueur) {
 
 async function LancerMissile(JoueurinstanceAxios, partie_id) {
   const data = await JoueurinstanceAxios.post(`${partie_id}/missiles`)
-  console.log("POST : " + partie_id + " : " + data.data.data.coordonnee)
   return data.data.data.coordonnee
 }
 
 async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_id, resultat) {
-  console.log(partie_id + " : " + coordonnée + " : " + resultat)
   await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`, { resultat: resultat})
 }
 
