@@ -42,7 +42,7 @@ export default function createGrid(titre) {
   return gridContainer;
 };
 
-export function placeTile(grid, row, col, facing, extremity = false) {
+export function placeTile(grid, row, col, code, facing, extremity = false) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => {
@@ -63,6 +63,8 @@ export function placeTile(grid, row, col, facing, extremity = false) {
             else if (facing == "up")
               img.style.transform = "rotate(0deg)";
 
+            cell.dataset.code = code;
+            console.log(cell.dataset.code)
             cell.appendChild(img);
           }
         })
@@ -75,10 +77,14 @@ export function envoieMissile(grid, row, col) {
       if (actualRow.dataset.id == row) {
         actualRow.querySelectorAll('*').forEach(cell => {
           if (cell.dataset.col == col) {
-            if (cell.querySelector('img'))
+            if (cell.querySelector('img')) {
               cell.className = "square bg-danger border border-danger"
-            else
+              return cell.dataset.code;
+            }
+            else {
               cell.className = "square bg-dark"
+              return 0;
+            }
           }
         })
       }

@@ -3,7 +3,7 @@ import grille from '../components/grille.js';
 import { placeTile, envoieMissile } from '../components/grille.js';
 import createFooter from '../components/footer.js';
 import axios from "axios";
-import { LancerMissile, ResultatMissile } from '../service/Battleship.js';
+import { LancerMissile, ResultatMissile, codeFromBateau } from '../service/Battleship.js';
 
 export default function createApercu(player1, player2) {
     const page = document.createElement('div');
@@ -41,7 +41,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid1, response.data.data.bateaux)
         partieId1 = response.data.data.id;
 
-        if (partieId2 != -1) loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2);
+        if (partieId2 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
       }).catch((error) => {
         console.error(error)
         const message = document.createElement('p');
@@ -55,7 +55,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid2, response.data.data.bateaux)
         partieId2 = response.data.data.id;
 
-        if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2);
+        if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
         console.log("boucle");
         /*LancerMissile(Joueur1instanceAxios, partieId2)
         .then((response) => {
@@ -82,26 +82,34 @@ export default function createApercu(player1, player2) {
 }
 
 export function placeBateaux(grid, bateaux) { // TODO why export?
-  Object.values(bateaux).forEach(bateau => {
+  Object.entries(bateaux).forEach(bateau => {
       const axeHorizontal = bateau[0][0] == bateau[1][0];
-      Object.values(bateau).forEach(position => {
-
+      const code = codeFromBateau(bateau[0]);
+      Object.values(bateau[1]).forEach(position => {
+      console.log(bateau[0]);
+      const lettre = position[0];
+      const chiffre = position.substring(2);
       if (bateau[0] == position)
-          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up", true)
+          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
       else if (bateau[bateau.length - 1] == position)
-          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "left" : "down", true)
+          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
       else
-          placeTile(grid, position[0], position.substring(2), axeHorizontal ? "right" : "up")
+          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
       })
   })
 }
 
-function loop(Joueur1instanceAxios, partieId1, Joueur2instanceAxios, partieId2) {
+function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2) {
   console.log("START LOOP");
   for(let i = 0; i < 10; i++) {
     setTimeout(() => {
     console.log("ITERATION");
-    LancerMissile(Joueur1instanceAxios, partieId1)
+
+    LancerMissile(Joueur1instanceAxios, partieId1, grid1).then((coord) => {
+      console.log(coord);
+      console.log(envoieMissile(grid1, coord[0],  coord.substring(2)));
+    })
+
     .then((response) => {
       console.log("loop " + response)
         ResultatMissile(response, Joueur1instanceAxios, partieId1)

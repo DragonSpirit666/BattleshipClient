@@ -10,3 +10,18 @@ export async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_i
   console.log(data);
   return data.data.data.coordonnee
 }
+
+export function codeFromBateau(bateau) {
+  switch (bateau) {
+    case "porte-avions":
+      return 2;
+    case "cuirasse":
+      return 3;
+    case "destroyer":
+      return 4;
+    case "sous-marin":
+      return 5;
+    case "patrouilleur":
+      return 6;
+  }
+}
