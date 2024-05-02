@@ -83,15 +83,14 @@ export default function createApercu(player1, player2) {
 
 export function placeBateaux(grid, bateaux) { // TODO why export?
   Object.entries(bateaux).forEach(bateau => {
-      const axeHorizontal = bateau[0][0] == bateau[1][0];
+      const axeHorizontal = bateau[1][0][0] == bateau[1][1][0];
       const code = codeFromBateau(bateau[0]);
       Object.values(bateau[1]).forEach(position => {
-      console.log(bateau[0]);
       const lettre = position[0];
       const chiffre = position.substring(2);
-      if (bateau[0] == position)
+      if (bateau[1][0] == position)
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
-      else if (bateau[bateau.length - 1] == position)
+      else if (bateau[1][bateau[1].length - 1] == position)
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
       else
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
