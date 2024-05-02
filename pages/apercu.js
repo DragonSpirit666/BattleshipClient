@@ -37,7 +37,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid1, response.data.data.bateaux)
         partieId1 = response.data.data.id;
 
-        if (partieId2 != -1) loop(historique, Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
+        if (partieId2 != -1) loop(historique, player1.nom, Joueur1instanceAxios, partieId1, grid1, player2.nom, Joueur2instanceAxios, partieId2, grid2);
       }).catch((error) => {
         console.error(error)
         const message = document.createElement('p');
@@ -51,7 +51,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid2, response.data.data.bateaux)
         partieId2 = response.data.data.id;
 
-        if (partieId1 != -1) loop(historique, Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2, historique);
+        if (partieId1 != -1) loop(historique, player1.nom, Joueur1instanceAxios, partieId1, grid1, player2.nom, Joueur2instanceAxios, partieId2, grid2, historique);
       }).catch((error) => {
         console.error(error);
         const message = document.createElement('p');
