@@ -80,8 +80,8 @@ export function envoieMissile(grid, row, col) {
           if (cell.dataset.col == col) {
             if (cell.querySelector('img')) {
               cell.className = "square bg-danger border border-danger"
-              console.log(cell.dataset.code)
               result = cell.dataset.code;
+              cell.dataset.code = 0;
               return;
             }
             else {

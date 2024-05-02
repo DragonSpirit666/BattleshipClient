@@ -1,3 +1,5 @@
+import { bateauFromCode } from "../service/Battleship";
+
 export default function createHistorique(mouvements) {
     const historiqueDiv = document.createElement('div');
     historiqueDiv.classList.add('p-4');
@@ -9,13 +11,10 @@ export default function createHistorique(mouvements) {
     const list = document.createElement('ul');
     list.classList.add('list-group');
 
-    mouvements.forEach((mouvement, index) => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('list-group-item');
-        listItem.textContent = mouvement;
-        listItem.setAttribute('key', index.toString());
-        list.appendChild(listItem);
-    });
+    const listItem = document.createElement('li');
+    listItem.classList.add('list-group-item');
+    listItem.textContent = "Début de la partie";
+    list.appendChild(listItem);
 
     historiqueDiv.appendChild(title);
     historiqueDiv.appendChild(list);
@@ -23,15 +22,27 @@ export default function createHistorique(mouvements) {
     return historiqueDiv;
 }
 
-export function updateHistorique(historiqueDiv, update) {
+export function updateHistorique(historiqueDiv, joueur, coordonnee, code) {
     const list = historiqueDiv.querySelector('ul');
-    list.innerHTML = '';
 
-    mouvements.forEach((mouvement, index) => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('list-group-item');
-        listItem.textContent = mouvement;
-        listItem.setAttribute('key', index.toString());
-        list.appendChild(listItem);
-    });
+    const listItem = document.createElement('li');
+    listItem.classList.add('list-group-item');
+
+    if (code === 1) {
+      listItem.textContent = `${joueur} a touché en ${coordonnee}`;
+      listItem.classList.add('text-danger', 'fw-bold');
+    } else if (code === 200) {
+      listItem.textContent = `FIN DE LA PARTIE : ${joueur} a gagné !`;
+      listItem.classList.add('fw-bold');
+    } else if (code > 1) {
+      listItem.textContent = `${joueur} a coulé ${bateauFromCode(code)}`;
+      listItem.classList.add('bg-danger', 'text-white', 'fw-bold');
+    } else {
+      listItem.textContent = `${joueur} a tiré en ${coordonnee}`;
+    }
+
+    list.appendChild(listItem);
+    if (list.children.length > 5) {
+      list.removeChild(list.children[0]);
+    }
 }

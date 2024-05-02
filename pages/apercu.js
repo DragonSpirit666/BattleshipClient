@@ -1,4 +1,4 @@
-import historique from '../components/historique.js';
+import createHistorique from '../components/historique.js';
 import grille from '../components/grille.js';
 import { placeTile } from '../components/grille.js';
 import createFooter from '../components/footer.js';
@@ -7,12 +7,8 @@ import { loop, codeFromBateau } from '../service/Battleship.js';
 
 export default function createApercu(player1, player2) {
     const page = document.createElement('div');
-    page.appendChild(historique([
-    "Joueur 1 à tiré en A1",
-    "Joueur 2 à tiré en B2",
-    "Touché en B2!",
-    "Joueur 1 à tiré en A2",
-    ]));
+    const historique = createHistorique();
+    page.appendChild(historique);
 
     const gridsContainer = document.createElement('div');
     gridsContainer.className = "d-flex flex-row justify-content-around flex-wrap"
@@ -41,7 +37,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid1, response.data.data.bateaux)
         partieId1 = response.data.data.id;
 
-        if (partieId2 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
+        if (partieId2 != -1) loop(historique, Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
       }).catch((error) => {
         console.error(error)
         const message = document.createElement('p');
@@ -55,7 +51,7 @@ export default function createApercu(player1, player2) {
         placeBateaux(grid2, response.data.data.bateaux)
         partieId2 = response.data.data.id;
 
-        if (partieId1 != -1) loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2);
+        if (partieId1 != -1) loop(historique, Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2, historique);
       }).catch((error) => {
         console.error(error);
         const message = document.createElement('p');
