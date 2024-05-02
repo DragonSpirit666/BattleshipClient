@@ -23,16 +23,17 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
     LancerMissile(Joueur1instance, partieId1).then((coord) => {
       let resultat = envoieMissile(grid2, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
+
       updateHistorique(historique, nomJoueur1, coord, resultat);
 
       if (aPerdu(etatBateau2)) finirPartie(historique, nomJoueur1);
 
-      ResultatMissile(coord, Joueur2instance, partieId1, resultat)
-        .then(() => {
+      ResultatMissile(coord, Joueur2instance, partieId1, resultat).then(() => {
           LancerMissile(Joueur2instance, partieId2).then((coord) => {
             resultat = envoieMissile(grid1, coord[0],  coord.substring(2));
             if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
             ResultatMissile(coord, Joueur1instance, partieId2, resultat);
+
             updateHistorique(historique, nomJoueur2, coord, resultat);
 
             if (aPerdu(etatBateau2)) finirPartie(historique, nomJoueur2);
@@ -40,8 +41,8 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
             setTimeout(() => {
               gameLoop();
             }, 1000);
+          })
         })
-      })
     })
   }
 
@@ -51,7 +52,6 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
 function aPerdu(etatBateau) {
   let isEnd = true;
   Object.values(etatBateau).forEach(value => {
-    console.log(value)
     if (value > 0) { isEnd = false; return; }
   })
 
@@ -64,11 +64,12 @@ function finirPartie(historique, joueur) {
 
 async function LancerMissile(JoueurinstanceAxios, partie_id) {
   const data = await JoueurinstanceAxios.post(`${partie_id}/missiles`)
+  console.log("POST : " + partie_id + " : " + data.data.data.coordonnee)
   return data.data.data.coordonnee
 }
 
 async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_id, resultat) {
-  console.log(resultat, partie_id, coordonnée)
+  console.log(partie_id + " : " + coordonnée + " : " + resultat)
   await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`, { resultat: resultat})
 }
 
