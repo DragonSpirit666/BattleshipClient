@@ -1,9 +1,9 @@
 import historique from '../components/historique.js';
 import grille from '../components/grille.js';
-import { placeTile, envoieMissile } from '../components/grille.js';
+import { placeTile } from '../components/grille.js';
 import createFooter from '../components/footer.js';
 import axios from "axios";
-import { LancerMissile, ResultatMissile, codeFromBateau } from '../service/Battleship.js';
+import { loop, codeFromBateau } from '../service/Battleship.js';
 
 export default function createApercu(player1, player2) {
     const page = document.createElement('div');
@@ -86,33 +86,4 @@ function placeBateaux(grid, bateaux) {
           placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
     })
   })
-}
-
-function loop(Joueur1instanceAxios, partieId1, grid1, Joueur2instanceAxios, partieId2, grid2) {
-  console.log("START LOOP");
-  for(let i = 0; i < 30; i++) {
-    setTimeout(() => {
-    console.log("ITERATION");
-
-    LancerMissile(Joueur1instanceAxios, partieId1).then((coord) => {
-      console.log(coord);
-      console.log(envoieMissile(grid1, coord[0],  coord.substring(2)));
-    })
-
-    .then((response) => {
-      console.log("loop " + response)
-        ResultatMissile(response, Joueur1instanceAxios, partieId1)
-        .then((response) => {
-          console.log("loop2 " + response)
-          LancerMissile(Joueur2instanceAxios, partieId2).then((coord) => {
-            console.log(coord);
-            console.log(envoieMissile(grid2, coord[0],  coord.substring(2)));
-          })
-          .then((response) => {
-            ResultatMissile(response, Joueur2instanceAxios, partieId2)
-        })
-      })
-    })
-  }, i * 1200);
-  }
 }
