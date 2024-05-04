@@ -46,7 +46,7 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
 
             setTimeout(() => {
               gameLoop();
-            }, 500);
+            }, 700);
           })
         })
     })
