@@ -1,5 +1,6 @@
 // Justin Morand et Zachary Deschênes-Tremblay
 import createHistorique from '../components/historique.js';
+import formPage from './form.js'
 import grille from '../components/grille.js';
 import { placeTile } from '../components/grille.js';
 import createFooter from '../components/footer.js';
@@ -18,6 +19,9 @@ export default function createApercu(player1, player2) {
 
     const grid1 = grille(player1.nom);
     const grid2 = grille(player2.nom);
+
+    const previewBateaux1 = bateauPreview();
+    const previewBateaux2 = bateauPreview();
 
     const Joueur1instanceAxios = axios.create({
       baseURL: player1.url,
@@ -39,8 +43,8 @@ export default function createApercu(player1, player2) {
         partieId1 = response.data.data.id;
 
         if (partieId2 != -1) loop(historique,
-          { "nom": player1.nom, "instance": Joueur1instanceAxios, "partieId":partieId1, "grid": grid1},
-          { "nom": player2.nom, "instance": Joueur2instanceAxios, "partieId":partieId2, "grid": grid2}
+          { "nom": player1.nom, "instance": Joueur1instanceAxios, "partieId":partieId1, "grid": grid1, "preview": previewBateaux1},
+          { "nom": player2.nom, "instance": Joueur2instanceAxios, "partieId":partieId2, "grid": grid2, "preview": previewBateaux2}
         );
       }).catch((error) => {
         console.error(error)
@@ -56,8 +60,8 @@ export default function createApercu(player1, player2) {
         partieId2 = response.data.data.id;
 
         if (partieId1 != -1) loop(historique,
-          { "nom": player1.nom, "instance": Joueur1instanceAxios, "partieId":partieId1, "grid": grid1},
-          { "nom": player2.nom, "instance": Joueur2instanceAxios, "partieId":partieId2, "grid": grid2}
+          { "nom": player1.nom, "instance": Joueur1instanceAxios, "partieId":partieId1, "grid": grid1, "preview": previewBateaux1},
+          { "nom": player2.nom, "instance": Joueur2instanceAxios, "partieId":partieId2, "grid": grid2, "preview": previewBateaux2}
         );
       }).catch((error) => {
         console.error(error);
@@ -66,12 +70,41 @@ export default function createApercu(player1, player2) {
         page.prepend(message);
       })
 
+      const boutonRetour = document.createElement('button');
+      boutonRetour.className = "btn btn-primary m-3";
+      boutonRetour.textContent = "Retour au formulaire";
+      boutonRetour.onclick = () => {
+        page.remove();
+        document.body.appendChild(formPage());
+      }
+
     gridsContainer.appendChild(grid1);
     gridsContainer.appendChild(grid2);
+
+    grid1.appendChild(previewBateaux1);
+    grid2.appendChild(previewBateaux2);
+
+    page.appendChild(boutonRetour);
 
     page.appendChild(createFooter());
 
     return page;
+}
+
+function bateauPreview() {
+  const preview = document.createElement('ul');
+  // preview.className = "d-flex flex-col flex-wrap";
+  return preview;
+}
+
+export function updatePreview(preview, etatBateau) {
+  preview.innerHTML = "";
+  console.log(etatBateau, preview);
+  Object.entries(etatBateau).forEach(value => {
+    const bateau = document.createElement('li');
+    bateau.innerHTML = `<b>${value[0]}:</b> ${value[1]} cases restantes`;
+    preview.appendChild(bateau);
+  })
 }
 
 function placeBateaux(grid, bateaux) {

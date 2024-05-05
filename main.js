@@ -5,8 +5,6 @@ import formPage from './pages/form.js'
 document.body.appendChild(formPage());
 
 /**
-
-/*
 À côté de vos grilles, vous devez présenter les bateaux de chaque joueur ainsi que leur état.
 La simulation s’arrête dès qu’un joueur gagne 2 parties. Le jeu doit tomber en pause entre chaque
 partie.

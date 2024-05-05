@@ -1,6 +1,7 @@
 // Justin Morand et Zachary Deschênes-Tremblay
 import { envoieMissile } from "../components/grille";
 import { updateHistorique } from "../components/historique";
+import { updatePreview } from "../pages/apercu";
 
 /**
  * Fonction qui gère le jeu.
@@ -37,6 +38,7 @@ export function loop(historique, joueur1, joueur2) {
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
 
       updateHistorique(historique, joueur1.nom, coord, resultat);
+      updatePreview(joueur2.preview, etatBateau2);
 
       if (aPerdu(etatBateau2)) {
         finirPartie(historique, joueur1.nom);
@@ -44,22 +46,23 @@ export function loop(historique, joueur1, joueur2) {
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
-          LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
-            resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
-            if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
-            ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
+        LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
+          resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
+          if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
+          ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
 
-            updateHistorique(historique, joueur2.nom, coord, resultat);
+          updateHistorique(historique, joueur2.nom, coord, resultat);
+          updatePreview(joueur1.preview, etatBateau1);
 
-            if (aPerdu(etatBateau1)) {
-              finirPartie(historique, joueur2.nom);
-              return;
-            }
+          if (aPerdu(etatBateau1)) {
+            finirPartie(historique, joueur2.nom);
+            return;
+          }
 
-            setTimeout(() => {
-              gameLoop();
-            }, 700);
-          })
+          setTimeout(() => {
+            gameLoop();
+          }, 700);
+        })
         })
     })
   }
@@ -90,10 +93,10 @@ function finirPartie(historique, joueur) {
   updateHistorique(historique, joueur, "", 200);
 }
 
-function randomBool() {
-  return Math.random() < 0.5;
-}
-
+/**
+ * Générer un booléen aléatoire.
+ * @returns {boolean} Un booléen aléatoire.
+ */
 function randomBool() {
   return Math.random() < 0.5;
 }

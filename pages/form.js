@@ -2,7 +2,13 @@
 import createApercu from './apercu.js';
 
 /**
+ * Sauvegarde du formulaire.
+ */
+const donneeFormulaire = {}
+
+/**
  * Crée un formulaire permettant de configurer les joueurs.
+ * @param {FormData} donneeFormulaire Les données du formulaire.
  * @return {HTMLFormElement} Le formulaire de configuration des joueurs.
  */
 export default function createForm() {
@@ -11,16 +17,16 @@ export default function createForm() {
     const subForm1 = document.createElement('div');
     form.appendChild(subForm1);
     subForm1.className = "card p-3 m-3";
-    subForm1.appendChild(createFormGroup("Nom du joueur IA 1", "nom1"));
-    subForm1.appendChild(createFormGroup("URL de l'API du joueur IA 1", "url1"));
-    subForm1.appendChild(createFormGroup("Jeton du joueur IA 1", "jeton1"));
+    subForm1.appendChild(createFormGroup("Nom du joueur IA 1", "nom1", donneeFormulaire["nom1"]));
+    subForm1.appendChild(createFormGroup("URL de l'API du joueur IA 1", "url1", donneeFormulaire["url1"]));
+    subForm1.appendChild(createFormGroup("Jeton du joueur IA 1", "jeton1", donneeFormulaire["jeton1"]));
 
     const subForm2 = document.createElement('div');
     form.appendChild(subForm2);
     subForm2.className = "card p-3 m-3";
-    subForm2.appendChild(createFormGroup("Nom du joueur IA 2", "nom2"));
-    subForm2.appendChild(createFormGroup("URL de l'API du joueur IA 2", "url2"));
-    subForm2.appendChild(createFormGroup("Jeton du joueur IA 2", "jeton2"));
+    subForm2.appendChild(createFormGroup("Nom du joueur IA 2", "nom2", donneeFormulaire["nom2"]));
+    subForm2.appendChild(createFormGroup("URL de l'API du joueur IA 2", "url2", donneeFormulaire["url2"]));
+    subForm2.appendChild(createFormGroup("Jeton du joueur IA 2", "jeton2", donneeFormulaire["jeton2"]));
 
     const button = document.createElement('button');
     button.className = "btn btn-primary m-3";
@@ -42,6 +48,14 @@ export default function createForm() {
             url: formData.get("url2"),
             jeton: formData.get("jeton2")
         };
+
+        donneeFormulaire["nom1"] = player1.nom;
+        donneeFormulaire["url1"] = player1.url;
+        donneeFormulaire["jeton1"] = player1.jeton;
+        donneeFormulaire["nom2"] = player2.nom;
+        donneeFormulaire["url2"] = player2.url;
+        donneeFormulaire["jeton2"] = player2.jeton;
+
         document.body.appendChild(createApercu(player1, player2));
     });
 
@@ -54,7 +68,7 @@ export default function createForm() {
  * @param {string} pour Le nom du champ de formulaire.
  * @return {HTMLDivElement} Le groupe de formulaire.
  */
-function createFormGroup(nom, pour) {
+function createFormGroup(nom, pour, valeurPrecedente = "") {
     const formGroup = document.createElement('div');
     formGroup.className = "form-group";
 
@@ -67,6 +81,7 @@ function createFormGroup(nom, pour) {
     input.type = "text";
     input.id = pour;
     input.name = pour;
+    input.value = valeurPrecedente;
     input.required = true;
 
     formGroup.appendChild(label);
