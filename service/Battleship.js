@@ -9,6 +9,8 @@ import { updateHistorique } from "../components/historique";
  * @param {Object} joueur2 Les informations du joueur 2.
  */
 export function loop(historique, joueur1, joueur2) {
+  let isPause = false;
+
   const etatBateau1 = {
     "porte-avions": 5,
     "cuirasse": 4,
@@ -32,6 +34,7 @@ export function loop(historique, joueur1, joueur2) {
   }
 
   function gameLoop() {
+
     LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
       let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
@@ -44,6 +47,9 @@ export function loop(historique, joueur1, joueur2) {
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
+
+          pauseExecutionWhenTrue();
+
           LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
             resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
             if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
@@ -57,11 +63,23 @@ export function loop(historique, joueur1, joueur2) {
             }
 
             setTimeout(() => {
+              pauseExecutionWhenTrue();
               gameLoop();
             }, 700);
           })
         })
     })
+  }
+
+  function pauseExecutionWhenTrue() {
+    // Vérifier périodiquement si la variable booléenne est vraie
+    const interval = setInterval(() => {
+        if (isPause) {
+            clearInterval(interval);
+        } else {
+            console.log("Pause");
+        }
+    }, 1000);
   }
 
   gameLoop();
