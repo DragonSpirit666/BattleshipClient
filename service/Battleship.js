@@ -112,6 +112,11 @@ async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_id, resu
   await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`, { resultat: resultat})
 }
 
+/**
+ * Donne le code d'un bateau à partir de son nom.
+ * @param {string} bateau Le nom du bateau.
+ * @return {number} Le code du bateau.
+ */
 export function codeFromBateau(bateau) {
   switch (bateau) {
     case "porte-avions":
@@ -127,6 +132,11 @@ export function codeFromBateau(bateau) {
   }
 }
 
+/**
+ * Donne le nom d'un bateau à partir de son code.
+ * @param {number} code Le code du bateau.
+ * @return {string} Le nom du bateau.
+ */
 export function bateauFromCode(code) {
   switch (+ code) {
     case 2:
