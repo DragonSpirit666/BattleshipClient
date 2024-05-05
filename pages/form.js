@@ -1,5 +1,9 @@
 import createApercu from './apercu.js';
 
+/**
+ * Crée un formulaire permettant de configurer les joueurs.
+ * @return {HTMLFormElement} Le formulaire de configuration des joueurs.
+ */
 export default function createForm() {
     const form = document.createElement('form');
 
@@ -43,6 +47,12 @@ export default function createForm() {
     return form;
 }
 
+/**
+ * Crée un groupe de formulaire.
+ * @param {string} nom Le nom du groupe.
+ * @param {string} pour Le nom du champ de formulaire.
+ * @return {HTMLDivElement} Le groupe de formulaire.
+ */
 function createFormGroup(nom, pour) {
     const formGroup = document.createElement('div');
     formGroup.className = "form-group";

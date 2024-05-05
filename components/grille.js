@@ -1,3 +1,8 @@
+/**
+ * Crée une grille de jeu de battleship.
+ * @param {string} titre Nom du joueur.
+ * @return {HTMLDivElement} La grille de jeu.
+ */
 export default function createGrid(titre) {
   const gridContainer = document.createElement('div');
 
@@ -42,6 +47,15 @@ export default function createGrid(titre) {
   return gridContainer;
 };
 
+/**
+ * Place une tuile de bateau sur la grille.
+ * @param {HTMLDivElement} grid La grille.
+ * @param {HTMLDivElement} row La ligne.
+ * @param {HTMLDivElement} col La colone.
+ * @param {Number} code Le code du bateau.
+ * @param {String} facing La direction du bateau.
+ * @param {Boolean} extremity Si la tuile est une extrémité.
+ */
 export function placeTile(grid, row, col, code, facing, extremity = false) {
   grid.querySelectorAll('*').forEach(actualRow => {
       if (actualRow.dataset.id == row) {
@@ -72,6 +86,13 @@ export function placeTile(grid, row, col, code, facing, extremity = false) {
   })
 }
 
+/**
+ * Colore une case de la grille.
+ * @param {HTMLDivElement} grid La grille.
+ * @param {HTMLDivElement} row La ligne.
+ * @param {HTMLDivElement} col La colone.
+ * @return {Number} Le code de la case.
+ */
 export function envoieMissile(grid, row, col) {
   let result = 0;
   grid.querySelectorAll('*').forEach(actualRow => {
