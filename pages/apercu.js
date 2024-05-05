@@ -85,11 +85,7 @@ export function partieGrille(player1, player2, donneeFormulaire, historique) {
       placeBateaux(grid1, response.data.data.bateaux)
       joueur1.partieId = response.data.data.id;
 
-      if (joueur2.partieId != -1) loop(historique,
-        joueur1,
-        joueur2,
-        donneeFormulaire
-      );
+      if (joueur2.partieId != -1) loop(historique, joueur1, joueur2, donneeFormulaire);
     }).catch((error) => {
       console.error(error)
       const message = document.createElement('p');
@@ -103,11 +99,7 @@ export function partieGrille(player1, player2, donneeFormulaire, historique) {
       placeBateaux(grid2, response.data.data.bateaux)
       joueur2.partieId = response.data.data.id;
 
-      if (joueur1.partieId != -1) loop(historique,
-        joueur1,
-        joueur2,
-        donneeFormulaire
-      );
+      if (joueur1.partieId != -1) loop(historique, joueur1, joueur2, donneeFormulaire);
     }).catch((error) => {
       console.error(error);
       const message = document.createElement('p');
