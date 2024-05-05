@@ -27,6 +27,7 @@ export function loop(historique, joueur1, joueur2) {
     "patrouilleur": 2
   }
 
+  // Select premier joueur aléatoirement
   if (randomBool()) {
     const temps = joueur1
     joueur1 = joueur2
@@ -35,6 +36,8 @@ export function loop(historique, joueur1, joueur2) {
 
   function gameLoop() {
 
+    pauseExecutionWhenTrue();
+
     LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
       let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
@@ -42,14 +45,11 @@ export function loop(historique, joueur1, joueur2) {
       updateHistorique(historique, joueur1.nom, coord, resultat);
 
       if (aPerdu(etatBateau2)) {
+        isPause = true;
         finirPartie(historique, joueur1.nom);
-        return;
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
-
-          pauseExecutionWhenTrue();
-
           LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
             resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
             if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
@@ -58,12 +58,11 @@ export function loop(historique, joueur1, joueur2) {
             updateHistorique(historique, joueur2.nom, coord, resultat);
 
             if (aPerdu(etatBateau1)) {
+              isPause = true;
               finirPartie(historique, joueur2.nom);
-              return;
             }
 
             setTimeout(() => {
-              pauseExecutionWhenTrue();
               gameLoop();
             }, 700);
           })
@@ -108,10 +107,9 @@ function finirPartie(historique, joueur) {
   updateHistorique(historique, joueur, "", 200);
 }
 
-function randomBool() {
-  return Math.random() < 0.5;
-}
-
+/**
+ * @returns {Boolean} Random entre vrai et faux
+ */
 function randomBool() {
   return Math.random() < 0.5;
 }
