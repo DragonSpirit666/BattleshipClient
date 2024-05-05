@@ -1,102 +1,19 @@
+// Justin Morand et Zachary Deschênes-Tremblay
 import './styles.css';
 import formPage from './pages/form.js'
-
-/*Vous devez créer une page web HTML, CSS et JavaScript pour simuler des parties de Battleship. Vous 
-pouvez utiliser les bibliothèques et les plateformes de votre choix. Assurez-vous d’indiquer clairement les 
-étapes d’installation ou d’exécution de votre projet dans un README.*/
 
 document.body.appendChild(formPage());
 
 /**
-// Le jeu doit s’effectuer à une vitesse raisonnable afin de pouvoir voir chaque coup.
-// Vous devez faire afficher l’historique des coups joués dans une section prévue à cet effet.
-
-Lorsqu'un bateau a été touché sur toutes ses cases, on annonce qu'il est coulé.
-Le premier joueur qui coule les cinq bateaux de son adversaire gagne
 
 /*
 À côté de vos grilles, vous devez présenter les bateaux de chaque joueur ainsi que leur état.
-La simulation s’arrête dès qu’un joueur gagne 2 parties. Le jeu doit tomber en pause entre chaque 
+La simulation s’arrête dès qu’un joueur gagne 2 parties. Le jeu doit tomber en pause entre chaque
 partie.
-Lorsque la partie est terminée, indiquez clairement le nom du gagnant et le nombre de victoires pour 
-chaque joueur (victoires de cette simulation). Finalement, donnez la possibilité de retourner au 
-formulaire d’accueil. Les champs doivent être préremplis afin de pouvoir démarrer une nouvelle partie 
+Lorsque la partie est terminée, indiquez clairement le nom du gagnant et le nombre de victoires pour
+chaque joueur (victoires de cette simulation). Finalement, donnez la possibilité de retourner au
+formulaire d’accueil. Les champs doivent être préremplis afin de pouvoir démarrer une nouvelle partie
 rapidement.
-Vous devez également ajouter un bouton pour arrêter une simulation en cours et retourner au 
+Vous devez également ajouter un bouton pour arrêter une simulation en cours et retourner au
 formulaire d’accueil à tout moment.
 */
-
-/*-------------------------/
-let xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === 4) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("GET", "http://localhost/api/timeentries");
-xhr.setRequestHeader("Accept", "application/json");
-
-xhr.send();   */
-
-/*
-let myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-
-let requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  redirect: "follow",
-};
-
-fetch("http://localhost/api/timeentries", requestOptions)
-  .then((response) => response.json())
-  .then((result) => {
-    result.data.forEach((element) => {
-    console.log(element);
-    });
-  })
-  .catch((error) => console.log("error", error));   */
-/*
-axios
-  .post("http://localhost/api/timeentries", {
-    nom_tache: "Tâche client",
-    date_debut: "2024-04-03",
-    date_fin: "2024-04-04",
-  })
-  .then((response) => console.log(response))
-  .catch((error) => console.error(error));
-*/
-/*  .get("http://localhost/api/timeentries")
-  .then((response) => console.log(response))
-  .catch((error) => console.error(error));
-*/
-/*
-const form = document.getElementById("search");
-const formFields = document.getElementById("search_fields");
-const result = document.getElementById("result");
-  
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  
-// TODO Validation
-  
-const id = document.getElementById("tache_id").value;
-  
-formFields.disabled = true;
-result.innerHTML = "...";
-  
-axios
-  .get("http://localhost/api/timeentries/" + id)
-  .then((response) => {
-    result.innerHTML = response?.data?.data?.nom_tache;
-  })
-  .catch((error) => {
-    result.innerHTML = error?.response?.data?.message;
-  })
-  .then(() => {
-    formFields.disabled = false;
-  });
-});*/

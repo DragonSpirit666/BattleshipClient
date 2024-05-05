@@ -1,3 +1,4 @@
+// Justin Morand et Zachary Deschênes-Tremblay
 import createApercu from './apercu.js';
 
 /**

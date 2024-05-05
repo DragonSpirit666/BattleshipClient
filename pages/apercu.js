@@ -1,3 +1,4 @@
+// Justin Morand et Zachary Deschênes-Tremblay
 import createHistorique from '../components/historique.js';
 import grille from '../components/grille.js';
 import { placeTile } from '../components/grille.js';

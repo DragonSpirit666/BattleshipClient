@@ -1,3 +1,5 @@
+// Justin Morand et Zachary Deschênes-Tremblay
+
 /**
  * Crée une grille de jeu de battleship.
  * @param {string} titre Nom du joueur.

@@ -6,7 +6,7 @@ import { updateHistorique } from "../components/historique";
  * Fonction qui gère le jeu.
  * @param {HTMLDivElement} historique L'historique de la partie.
  * @param {Object} joueur1 Les informations du joueur 1.
- * @param {string} joueur1.nom Le nom du joueur 1.
+ * @param {Object} joueur2 Les informations du joueur 2.
  */
 export function loop(historique, joueur1, joueur2) {
   const etatBateau1 = {

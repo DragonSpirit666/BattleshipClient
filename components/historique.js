@@ -1,6 +1,11 @@
+// Justin Morand et Zachary Deschênes-Tremblay
 import { bateauFromCode } from "../service/Battleship";
 
-export default function createHistorique(mouvements) {
+/**
+ * Crée l'historique des mouvements.
+ * @return {HTMLDivElement} L'historique des mouvements.
+ */
+export default function createHistorique() {
     const historiqueDiv = document.createElement('div');
     historiqueDiv.classList.add('p-4');
 
@@ -22,6 +27,13 @@ export default function createHistorique(mouvements) {
     return historiqueDiv;
 }
 
+/**
+ * Met à jour l'historique des mouvements.
+ * @param {HTMLDivElement} historiqueDiv L'historique des mouvements.
+ * @param {String} joueur Le nom du joueur.
+ * @param {String} coordonnee La coordonnée du tir.
+ * @param {Number} code Le code de la case en question.
+ */
 export function updateHistorique(historiqueDiv, joueur, coordonnee, code) {
     const list = historiqueDiv.querySelector('ul');
 
