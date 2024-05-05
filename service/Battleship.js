@@ -38,27 +38,27 @@ export function loop(historique, joueur1, joueur2) {
   }
 
   function gameLoop() {
-    LancerMissile(joueur1.Joueurinstance, joueur1.partieId).then((coord) => {
+    LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
       let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
 
-      updateHistorique(historique, joueur1.nomJoueur, coord, resultat);
+      updateHistorique(historique, joueur1.nom, coord, resultat);
 
       if (aPerdu(etatBateau2)) {
-        finirPartie(historique, joueur1.nomJoueur);
+        finirPartie(historique, joueur1.nom);
         return;
       }
 
-      ResultatMissile(coord, joueur1.Joueurinstance, joueur1.partieId, resultat).then(() => {
-          LancerMissile(joueur2.Joueurinstance, joueur2.partieId).then((coord) => {
+      ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
+          LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
             resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
             if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
-            ResultatMissile(coord, joueur2.Joueurinstance, joueur2.partieId, resultat);
+            ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
 
-            updateHistorique(historique, joueur2.nomJoueur, coord, resultat);
+            updateHistorique(historique, joueur2.nom, coord, resultat);
 
             if (aPerdu(etatBateau1)) {
-              finirPartie(historique, joueur2.nomJoueur);
+              finirPartie(historique, joueur2.nom);
               return;
             }
 
