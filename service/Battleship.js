@@ -3,8 +3,8 @@ import { envoieMissile } from "../components/grille";
 import { updateHistorique } from "../components/historique";
 
 /**
- * Fonction qui gère le déroulement d'une partie de battleship.
- * @param {HTMLDivElement} historique L'historique de la partie.
+ *
+ * @param {*} historique
  * @param {*} nomJoueur1
  * @param {*} Joueur1instance
  * @param {*} partieId1
@@ -14,7 +14,7 @@ import { updateHistorique } from "../components/historique";
  * @param {*} partieId2
  * @param {*} grid2
  */
-export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, nomJoueur2, Joueur2instance, partieId2, grid2) {
+export function loop(historique, joueur1, joueur2) {
   const etatBateau1 = {
     "porte-avions": 5,
     "cuirasse": 4,
@@ -31,28 +31,34 @@ export function loop(historique, nomJoueur1, Joueur1instance, partieId1, grid1, 
     "patrouilleur": 2
   }
 
+  if (randomBool()) {
+    const temps = joueur1
+    joueur1 = joueur2
+    joueur2 = temps
+  }
+
   function gameLoop() {
-    LancerMissile(Joueur1instance, partieId1).then((coord) => {
-      let resultat = envoieMissile(grid2, coord[0],  coord.substring(2));
+    LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
+      let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
 
-      updateHistorique(historique, nomJoueur1, coord, resultat);
+      updateHistorique(historique, joueur1.nom, coord, resultat);
 
       if (aPerdu(etatBateau2)) {
-        finirPartie(historique, nomJoueur1);
+        finirPartie(historique, joueur1.nom);
         return;
       }
 
-      ResultatMissile(coord, Joueur2instance, partieId1, resultat).then(() => {
-          LancerMissile(Joueur2instance, partieId2).then((coord) => {
-            resultat = envoieMissile(grid1, coord[0],  coord.substring(2));
+      ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
+          LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
+            resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
             if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
-            ResultatMissile(coord, Joueur1instance, partieId2, resultat);
+            ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
 
-            updateHistorique(historique, nomJoueur2, coord, resultat);
+            updateHistorique(historique, joueur2.nom, coord, resultat);
 
             if (aPerdu(etatBateau1)) {
-              finirPartie(historique, nomJoueur2);
+              finirPartie(historique, joueur2.nom);
               return;
             }
 
@@ -88,6 +94,14 @@ function aPerdu(etatBateau) {
  */
 function finirPartie(historique, joueur) {
   updateHistorique(historique, joueur, "", 200);
+}
+
+function randomBool() {
+  return Math.random() < 0.5;
+}
+
+function randomBool() {
+  return Math.random() < 0.5;
 }
 
 /**
