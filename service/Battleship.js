@@ -10,6 +10,8 @@ import { updatePreview } from "../pages/apercu";
  * @param {Object} joueur2 Les informations du joueur 2.
  */
 export function loop(historique, joueur1, joueur2) {
+  let isPause = false;
+
   const etatBateau1 = {
     "porte-avions": 5,
     "cuirasse": 4,
@@ -26,6 +28,7 @@ export function loop(historique, joueur1, joueur2) {
     "patrouilleur": 2
   }
 
+  // Select premier joueur aléatoirement
   if (randomBool()) {
     const temps = joueur1
     joueur1 = joueur2
@@ -33,6 +36,9 @@ export function loop(historique, joueur1, joueur2) {
   }
 
   function gameLoop() {
+
+    pauseExecutionWhenTrue();
+
     LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
       let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
@@ -41,8 +47,8 @@ export function loop(historique, joueur1, joueur2) {
       updatePreview(joueur2.preview, etatBateau2);
 
       if (aPerdu(etatBateau2)) {
+        isPause = true;
         finirPartie(historique, joueur1.nom);
-        return;
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
@@ -54,10 +60,10 @@ export function loop(historique, joueur1, joueur2) {
           updateHistorique(historique, joueur2.nom, coord, resultat);
           updatePreview(joueur1.preview, etatBateau1);
 
-          if (aPerdu(etatBateau1)) {
-            finirPartie(historique, joueur2.nom);
-            return;
-          }
+            if (aPerdu(etatBateau1)) {
+              isPause = true;
+              finirPartie(historique, joueur2.nom);
+            }
 
           setTimeout(() => {
             gameLoop();
@@ -65,6 +71,17 @@ export function loop(historique, joueur1, joueur2) {
         })
         })
     })
+  }
+
+  function pauseExecutionWhenTrue() {
+    // Vérifier périodiquement si la variable booléenne est vraie
+    const interval = setInterval(() => {
+        if (isPause) {
+            clearInterval(interval);
+        } else {
+            console.log("Pause");
+        }
+    }, 1000);
   }
 
   gameLoop();
