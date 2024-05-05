@@ -3,16 +3,10 @@ import { envoieMissile } from "../components/grille";
 import { updateHistorique } from "../components/historique";
 
 /**
- *
- * @param {*} historique
- * @param {*} nomJoueur1
- * @param {*} Joueur1instance
- * @param {*} partieId1
- * @param {*} grid1
- * @param {*} nomJoueur2
- * @param {*} Joueur2instance
- * @param {*} partieId2
- * @param {*} grid2
+ * Fonction qui gère le jeu.
+ * @param {HTMLDivElement} historique L'historique de la partie.
+ * @param {Object} joueur1 Les informations du joueur 1.
+ * @param {string} joueur1.nom Le nom du joueur 1.
  */
 export function loop(historique, joueur1, joueur2) {
   const etatBateau1 = {
