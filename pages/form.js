@@ -41,12 +41,14 @@ export default function createForm() {
         const player1 = {
             nom: formData.get("nom1"),
             url: formData.get("url1"),
-            jeton: formData.get("jeton1")
+            jeton: formData.get("jeton1"),
+            "score":0
         };
         const player2 = {
             nom: formData.get("nom2"),
             url: formData.get("url2"),
-            jeton: formData.get("jeton2")
+            jeton: formData.get("jeton2"),
+            "score":0
         };
 
         donneeFormulaire["nom1"] = player1.nom;
@@ -56,7 +58,7 @@ export default function createForm() {
         donneeFormulaire["url2"] = player2.url;
         donneeFormulaire["jeton2"] = player2.jeton;
 
-        document.body.appendChild(createApercu(player1, player2));
+        document.body.appendChild(createApercu(player1, player2, donneeFormulaire));
     });
 
     return form;

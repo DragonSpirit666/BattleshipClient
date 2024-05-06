@@ -1,7 +1,8 @@
 // Justin Morand et Zachary Deschênes-Tremblay
 import { envoieMissile } from "../components/grille";
 import { updateHistorique } from "../components/historique";
-import { updatePreview } from "../pages/apercu";
+import { partieGrille, updatePreview } from "../pages/apercu";
+import createPageFin from "../pages/pageFin";
 
 /**
  * Fonction qui gère le jeu.
@@ -9,7 +10,7 @@ import { updatePreview } from "../pages/apercu";
  * @param {Object} joueur1 Les informations du joueur 1.
  * @param {Object} joueur2 Les informations du joueur 2.
  */
-export function loop(historique, joueur1, joueur2) {
+export function loop(historique, joueur1, joueur2, donneeFormulaire) {
   let isPause = false;
 
   const etatBateau1 = {
@@ -36,19 +37,33 @@ export function loop(historique, joueur1, joueur2) {
   }
 
   function gameLoop() {
-
     pauseExecutionWhenTrue();
 
     LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
       let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
 
-      updateHistorique(historique, joueur1.nom, coord, resultat);
+      updateHistorique(historique, joueur1.playerConfig.nom, coord, resultat);
       updatePreview(joueur2.preview, etatBateau2);
 
       if (aPerdu(etatBateau2)) {
         isPause = true;
-        finirPartie(historique, joueur1.nom);
+        setTimeout(() => {
+          isPause = false;
+        }, 2000);
+        finirPartie(historique, joueur1.playerConfig.nom);
+        joueur1.playerConfig.score += 1;
+        if (joueur1.playerConfig.score >= 2) {
+          document.body.innerHTML = "";
+          document.body.appendChild(createPageFin(joueur1.playerConfig.nom, joueur2.playerConfig.nom,
+            joueur1.playerConfig.score, joueur2.playerConfig.score, donneeFormulaire));
+          return;
+        }
+        pauseExecutionWhenTrue();
+        document.querySelector('.partieGrille').replaceWith(
+          partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
+        );
+        return;
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
@@ -57,12 +72,27 @@ export function loop(historique, joueur1, joueur2) {
           if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
           ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
 
-          updateHistorique(historique, joueur2.nom, coord, resultat);
+          updateHistorique(historique, joueur2.playerConfig.nom, coord, resultat);
           updatePreview(joueur1.preview, etatBateau1);
 
             if (aPerdu(etatBateau1)) {
               isPause = true;
-              finirPartie(historique, joueur2.nom);
+              setTimeout(() => {
+                isPause = false;
+              }, 2000);
+              finirPartie(historique, joueur2.playerConfig.nom);
+              joueur2.playerConfig.score += 1;
+              if (joueur2.playerConfig.score >= 2) {
+                document.body.innerHTML = "";
+                document.body.appendChild(createPageFin(joueur2.playerConfig.nom, joueur1.playerConfig.nom,
+                  joueur2.playerConfig.score , joueur1.playerConfig.score, donneeFormulaire));
+                return;
+              }
+              pauseExecutionWhenTrue();
+              document.querySelector('.partieGrille').replaceWith(
+                partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
+              );
+              return;
             }
 
           setTimeout(() => {
@@ -73,10 +103,7 @@ export function loop(historique, joueur1, joueur2) {
     })
   }
 
-//-------------------------- TODO ZACH : QUAND FINI CALL createPageFin --------------------\\
-
   function pauseExecutionWhenTrue() {
-    // Vérifier périodiquement si la variable booléenne est vraie
     const interval = setInterval(() => {
         if (isPause) {
             clearInterval(interval);
