@@ -29,7 +29,7 @@ export function loop(historique, joueur1, joueur2, donneeFormulaire) {
     "patrouilleur": 2
   }
 
-  // Select premier joueur aléatoirement
+  // Choisis le premier joueur aléatoirement
   if (randomBool()) {
     const temps = joueur1
     joueur1 = joueur2
@@ -129,7 +129,7 @@ function finirPartie(historique, joueur) {
 
 /**
  * Générer un booléen aléatoire.
- * @returns {boolean} Un booléen aléatoire.
+ * @return {boolean} Un booléen aléatoire.
  */
 function randomBool() {
   return Math.random() < 0.5;

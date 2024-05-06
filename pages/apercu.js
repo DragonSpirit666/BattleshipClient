@@ -7,6 +7,13 @@ import createFooter from '../components/footer.js';
 import axios from "axios";
 import { loop, codeFromBateau } from '../service/Battleship.js';
 
+/**
+ * Crée un aperçu de la partie.
+ * @param {Object} player1 Joueur 1.
+ * @param {Object} player2 Joueur 2.
+ * @param {Object} donneeFormulaire Les données du formulaire.
+ * @return {HTMLDivElement} L'aperçu de la partie.
+ */
 export default function createApercu(player1, player2, donneeFormulaire) {
   const page = document.createElement('div');
   const historique = createHistorique();
