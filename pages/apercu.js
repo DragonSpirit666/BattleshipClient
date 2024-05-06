@@ -8,37 +8,44 @@ import axios from "axios";
 import { loop, codeFromBateau } from '../service/Battleship.js';
 
 export default function createApercu(player1, player2, donneeFormulaire) {
-    const page = document.createElement('div');
-    const historique = createHistorique();
+  const page = document.createElement('div');
+  const historique = createHistorique();
 
-    page.appendChild(historique);
+  page.appendChild(historique);
 
-    page.appendChild(partieGrille(player1, player2, donneeFormulaire, historique))
+  page.appendChild(partieGrille(player1, player2, donneeFormulaire, historique))
 
-    const boutonRetour = document.createElement('button');
-    boutonRetour.className = "btn btn-primary m-3";
-    boutonRetour.textContent = "Retour au formulaire";
-    boutonRetour.onclick = () => {
-      page.remove();
-      document.body.appendChild(formPage(donneeFormulaire));
-    }
+  const boutonRetour = document.createElement('button');
+  boutonRetour.className = "btn btn-primary m-3";
+  boutonRetour.textContent = "Retour au formulaire";
+  boutonRetour.onclick = () => {
+    page.remove();
+    document.body.appendChild(formPage(donneeFormulaire));
+  }
 
-    page.appendChild(boutonRetour);
+  page.appendChild(boutonRetour);
 
-    page.appendChild(createFooter());
+  page.appendChild(createFooter());
 
-    return page;
+  return page;
 }
 
+/**
+ * Crée un preview des bateaux.
+ * @return {HTMLUListElement} Le preview des bateaux.
+ */
 function bateauPreview() {
   const preview = document.createElement('ul');
-  // preview.className = "d-flex flex-col flex-wrap";
   return preview;
 }
 
+/**
+ * Met à jour le preview des bateaux.
+ * @param {HTMLUListElement} preview Le preview des bateaux.
+ * @param {Object} etatBateau L'état des bateaux.
+ */
 export function updatePreview(preview, etatBateau) {
   preview.innerHTML = "";
-  console.log(etatBateau, preview);
   Object.entries(etatBateau).forEach(value => {
     const bateau = document.createElement('li');
     bateau.innerHTML = `<b>${value[0]}:</b> ${value[1]} cases restantes`;
@@ -46,6 +53,14 @@ export function updatePreview(preview, etatBateau) {
   })
 }
 
+/**
+ * Crée une partie et ses grilles.
+ * @param {Object} player1 Joueur 1.
+ * @param {Object} player2 Joueur 2.
+ * @param {Object} donneeFormulaire Les données du formulaire.
+ * @param {HTMLDivElement} historique L'historique de la partie.
+ * @return {HTMLDivElement} La partie.
+ */
 export function partieGrille(player1, player2, donneeFormulaire, historique) {
   const page = document.createElement('div');
 
@@ -72,15 +87,19 @@ export function partieGrille(player1, player2, donneeFormulaire, historique) {
     headers: { Authorization: `Bearer ${player2.jeton}` }
   });
 
-  let joueur1 = {"playerConfig": {"url": player1.url, "jeton": player1.jeton, "nom": player1.nom, "score": player1.score}, "instance": Joueur1instanceAxios, "partieId":-1,
-  "grid": grid1, "preview": previewBateaux1}
+  let joueur1 = {
+    "playerConfig": { "url": player1.url, "jeton": player1.jeton, "nom": player1.nom, "score": player1.score }, "instance": Joueur1instanceAxios, "partieId": -1,
+    "grid": grid1, "preview": previewBateaux1
+  }
 
-  let joueur2 = {"playerConfig": {"url": player2.url, "jeton": player2.jeton, "nom": player2.nom, "score": player2.score}, "instance": Joueur2instanceAxios, "partieId":-1,
-  "grid": grid2, "preview": previewBateaux2}
+  let joueur2 = {
+    "playerConfig": { "url": player2.url, "jeton": player2.jeton, "nom": player2.nom, "score": player2.score }, "instance": Joueur2instanceAxios, "partieId": -1,
+    "grid": grid2, "preview": previewBateaux2
+  }
 
 
   Joueur1instanceAxios
-    .post("", {adversaire: player1.nom})
+    .post("", { adversaire: player1.nom })
     .then((response) => {
       placeBateaux(grid1, response.data.data.bateaux)
       joueur1.partieId = response.data.data.id;
@@ -94,7 +113,7 @@ export function partieGrille(player1, player2, donneeFormulaire, historique) {
     })
 
   Joueur2instanceAxios
-    .post("", {adversaire: player2.nom})
+    .post("", { adversaire: player2.nom })
     .then((response) => {
       placeBateaux(grid2, response.data.data.bateaux)
       joueur2.partieId = response.data.data.id;
@@ -107,15 +126,20 @@ export function partieGrille(player1, player2, donneeFormulaire, historique) {
       page.prepend(message);
     })
 
-    gridsContainer.appendChild(grid1);
-    gridsContainer.appendChild(grid2);
+  gridsContainer.appendChild(grid1);
+  gridsContainer.appendChild(grid2);
 
-    grid1.appendChild(previewBateaux1);
-    grid2.appendChild(previewBateaux2);
+  grid1.appendChild(previewBateaux1);
+  grid2.appendChild(previewBateaux2);
 
-    return page;
+  return page;
 }
 
+/**
+ * Place les bateaux sur la grille.
+ * @param {HTMLDivElement} grid La grille.
+ * @param {Array} bateaux Les bateaux à placer.
+ */
 function placeBateaux(grid, bateaux) {
   Object.entries(bateaux).forEach(bateau => {
     const code = codeFromBateau(bateau[0]);
@@ -124,11 +148,11 @@ function placeBateaux(grid, bateaux) {
       const lettre = position[0];
       const chiffre = position.substring(2);
       if (bateau[1][0] == position)                         // Place première extremité du bateau
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
+        placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up", true)
       else if (bateau[1][bateau[1].length - 1] == position) // Place extremité de fin du bateau
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
+        placeTile(grid, lettre, chiffre, code, axeHorizontal ? "left" : "down", true)
       else
-          placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
+        placeTile(grid, lettre, chiffre, code, axeHorizontal ? "right" : "up")
     })
   })
 }

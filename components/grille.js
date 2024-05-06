@@ -60,31 +60,31 @@ export default function createGrid(titre) {
  */
 export function placeTile(grid, row, col, code, facing, extremity = false) {
   grid.querySelectorAll('*').forEach(actualRow => {
-      if (actualRow.dataset.id == row) {
-        actualRow.querySelectorAll('*').forEach(cell => {
-          if (cell.dataset.col == col) {
-            const img = document.createElement("img");
-            img.className = "w-100 h-100";
+    if (actualRow.dataset.id == row) {
+      actualRow.querySelectorAll('*').forEach(cell => {
+        if (cell.dataset.col == col) {
+          const img = document.createElement("img");
+          img.className = "w-100 h-100";
 
-            if (extremity)
-              img.src = "../../images/BoatTileExtremity.png";
-            else
-              img.src = "../../images/BoatTile.png";
+          if (extremity)
+            img.src = "../../images/BoatTileExtremity.png";
+          else
+            img.src = "../../images/BoatTile.png";
 
-            if (facing == "right")
-              img.style.transform = "rotate(270deg)";
-            else if (facing == "left")
-              img.style.transform = "rotate(90deg)";
-            else if (facing == "down")
-              img.style.transform = "rotate(180deg)";
-            else if (facing == "up")
-              img.style.transform = "rotate(0deg)";
+          if (facing == "right")
+            img.style.transform = "rotate(270deg)";
+          else if (facing == "left")
+            img.style.transform = "rotate(90deg)";
+          else if (facing == "down")
+            img.style.transform = "rotate(180deg)";
+          else if (facing == "up")
+            img.style.transform = "rotate(0deg)";
 
-            cell.dataset.code = code;
-            cell.appendChild(img);
-          }
-        })
-      }
+          cell.dataset.code = code;
+          cell.appendChild(img);
+        }
+      })
+    }
   })
 }
 
@@ -98,22 +98,22 @@ export function placeTile(grid, row, col, code, facing, extremity = false) {
 export function envoieMissile(grid, row, col) {
   let result = 0;
   grid.querySelectorAll('*').forEach(actualRow => {
-      if (actualRow.dataset.id == row) {
-        actualRow.querySelectorAll('*').forEach(cell => {
-          if (cell.dataset.col == col) {
-            if (cell.querySelector('img')) {
-              cell.className = "square bg-danger border border-danger"
-              result = cell.dataset.code;
-              cell.dataset.code = 0;
-              return;
-            }
-            else {
-              cell.className = "square bg-dark"
-              return;
-            }
+    if (actualRow.dataset.id == row) {
+      actualRow.querySelectorAll('*').forEach(cell => {
+        if (cell.dataset.col == col) {
+          if (cell.querySelector('img')) {
+            cell.className = "square bg-danger border border-danger"
+            result = cell.dataset.code;
+            cell.dataset.code = 0;
+            return;
           }
-        })
-      }
+          else {
+            cell.className = "square bg-dark"
+            return;
+          }
+        }
+      })
+    }
   })
 
   return result;

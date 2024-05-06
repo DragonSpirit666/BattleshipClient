@@ -11,7 +11,7 @@ import createPageFin from "../pages/pageFin";
  * @param {Object} joueur2 Les informations du joueur 2.
  */
 export function loop(historique, joueur1, joueur2, donneeFormulaire) {
-  let isPause = false;
+  const tempsPause = 4000;
 
   const etatBateau1 = {
     "porte-avions": 5,
@@ -37,80 +37,68 @@ export function loop(historique, joueur1, joueur2, donneeFormulaire) {
   }
 
   function gameLoop() {
-    pauseExecutionWhenTrue();
-
     LancerMissile(joueur1.instance, joueur1.partieId).then((coord) => {
-      let resultat = envoieMissile(joueur2.grid, coord[0],  coord.substring(2));
+      let resultat = envoieMissile(joueur2.grid, coord[0], coord.substring(2));
       if (resultat > 1 && --etatBateau2[bateauFromCode(resultat)] > 0) resultat = 1;
 
       updateHistorique(historique, joueur1.playerConfig.nom, coord, resultat);
       updatePreview(joueur2.preview, etatBateau2);
 
       if (aPerdu(etatBateau2)) {
-        isPause = true;
-        setTimeout(() => {
-          isPause = false;
-        }, 2000);
         finirPartie(historique, joueur1.playerConfig.nom);
         joueur1.playerConfig.score += 1;
         if (joueur1.playerConfig.score >= 2) {
-          document.body.innerHTML = "";
-          document.body.appendChild(createPageFin(joueur1.playerConfig.nom, joueur2.playerConfig.nom,
-            joueur1.playerConfig.score, joueur2.playerConfig.score, donneeFormulaire));
+          setTimeout(() => {
+            document.body.innerHTML = "";
+            document.body.appendChild(createPageFin(joueur1.playerConfig.nom, joueur2.playerConfig.nom,
+              joueur1.playerConfig.score, joueur2.playerConfig.score, donneeFormulaire));
+          }, tempsPause)
           return;
         }
-        pauseExecutionWhenTrue();
-        document.querySelector('.partieGrille').replaceWith(
-          partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
-        );
+
+        setTimeout(() => {
+          document.querySelector('.partieGrille').replaceWith(
+            partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
+          );
+        }, tempsPause)
         return;
       }
 
       ResultatMissile(coord, joueur1.instance, joueur1.partieId, resultat).then(() => {
         LancerMissile(joueur2.instance, joueur2.partieId).then((coord) => {
-          resultat = envoieMissile(joueur1.grid, coord[0],  coord.substring(2));
+          resultat = envoieMissile(joueur1.grid, coord[0], coord.substring(2));
           if (resultat > 1 && --etatBateau1[bateauFromCode(resultat)] > 0) resultat = 1;
           ResultatMissile(coord, joueur2.instance, joueur2.partieId, resultat);
 
           updateHistorique(historique, joueur2.playerConfig.nom, coord, resultat);
           updatePreview(joueur1.preview, etatBateau1);
 
-            if (aPerdu(etatBateau1)) {
-              isPause = true;
+          if (aPerdu(etatBateau1)) {
+            finirPartie(historique, joueur2.playerConfig.nom);
+            joueur2.playerConfig.score += 1;
+            if (joueur2.playerConfig.score >= 2) {
               setTimeout(() => {
-                isPause = false;
-              }, 2000);
-              finirPartie(historique, joueur2.playerConfig.nom);
-              joueur2.playerConfig.score += 1;
-              if (joueur2.playerConfig.score >= 2) {
                 document.body.innerHTML = "";
                 document.body.appendChild(createPageFin(joueur2.playerConfig.nom, joueur1.playerConfig.nom,
-                  joueur2.playerConfig.score , joueur1.playerConfig.score, donneeFormulaire));
-                return;
-              }
-              pauseExecutionWhenTrue();
-              document.querySelector('.partieGrille').replaceWith(
-                partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
-              );
+                  joueur2.playerConfig.score, joueur1.playerConfig.score, donneeFormulaire));
+              }, tempsPause)
               return;
             }
 
+            setTimeout(() => {
+              document.querySelector('.partieGrille').replaceWith(
+                partieGrille(joueur1.playerConfig, joueur2.playerConfig, donneeFormulaire, historique)
+              );
+            }, tempsPause)
+            return;
+          }
+
           setTimeout(() => {
             gameLoop();
-          }, 700);
+          }, 600);
         })
-        })
+      })
     })
-  }
-
-  function pauseExecutionWhenTrue() {
-    const interval = setInterval(() => {
-        if (isPause) {
-            clearInterval(interval);
-        } else {
-            console.log("Pause");
-        }
-    }, 1000);
   }
 
   gameLoop();
@@ -166,7 +154,7 @@ async function LancerMissile(JoueurinstanceAxios, partie_id) {
  * @param {number} resultat Le résultat du missile.
  */
 async function ResultatMissile(coordonnée, JoueurinstanceAxios, partie_id, resultat) {
-  await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`, { resultat: resultat})
+  await JoueurinstanceAxios.put(`${partie_id}/missiles/${coordonnée}`, { resultat: resultat })
 }
 
 /**
