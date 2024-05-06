@@ -73,7 +73,7 @@ export function loop(historique, joueur1, joueur2) {
     })
   }
 
-//-------------------------- TODO ZACH : QUAND FINI CALL createPageFin
+//-------------------------- TODO ZACH : QUAND FINI CALL createPageFin --------------------\\
 
   function pauseExecutionWhenTrue() {
     // Vérifier périodiquement si la variable booléenne est vraie
